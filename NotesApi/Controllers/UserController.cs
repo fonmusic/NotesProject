@@ -6,110 +6,69 @@ namespace NotesApi.Controllers;
 [ApiController]
 public class UserController : ControllerBase
 {
-    private readonly NotesContext _context;
+    private readonly IUserService _userService;
 
-    public UserController(NotesContext context)
+    public UserController(IUserService userService)
     {
-        _context = context;
+        _userService = userService;
     }
 
     // GET: api/User
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+    public async Task<ActionResult<ServiceResponse<IEnumerable<User>>>> GetUsers()
     {
-        if (_context.Users == null)
-        {
-            return NotFound();
-        }
-        return await _context.Users.ToListAsync();
+        var serviceResponse = await _userService.GetUsers();
+        return Ok(serviceResponse);
     }
 
     // GET: api/User/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<User>> GetUser(int id)
+    public async Task<ActionResult<ServiceResponse<User>>> GetUser(int id)
     {
-        if (_context.Users == null)
-        {
-            return NotFound();
-        }
-        var user = await _context.Users.FindAsync(id);
+        var serviceResponse = await _userService.GetUserById(id);
 
-        if (user == null)
+        if (!serviceResponse.Success)
         {
-            return NotFound();
+            return NotFound(serviceResponse);
         }
 
-        return user;
+        return Ok(serviceResponse);
     }
 
     // PUT: api/User/5
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
     public async Task<IActionResult> PutUser(int id, User user)
     {
-        if (id != user.ID)
-        {
-            return BadRequest();
-        }
+        var serviceResponse = await _userService.UpdateUser(id, user);
 
-        _context.Entry(user).State = EntityState.Modified;
-
-        try
+        if (!serviceResponse.Success)
         {
-            await _context.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!UserExists(id))
-            {
-                return NotFound();
-            }
-            else
-            {
-                throw;
-            }
+            return BadRequest(serviceResponse);
         }
 
         return NoContent();
     }
 
     // POST: api/User
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<User>> PostUser(User user)
+    public async Task<ActionResult<ServiceResponse<User>>> PostUser(User user)
     {
-        if (_context.Users == null)
-        {
-            return Problem("Entity set 'NotesContext.Users'  is null.");
-        }
-        _context.Users.Add(user);
-        await _context.SaveChangesAsync();
-
-        return CreatedAtAction("GetUser", new { id = user.ID }, user);
+        var serviceResponse = await _userService.CreateUser(user);
+        return CreatedAtAction(nameof(GetUser), new { id = serviceResponse.Data.ID }, serviceResponse);
     }
 
     // DELETE: api/User/5
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteUser(int id)
     {
-        if (_context.Users == null)
-        {
-            return NotFound();
-        }
-        var user = await _context.Users.FindAsync(id);
-        if (user == null)
-        {
-            return NotFound();
-        }
+        var serviceResponse = await _userService.DeleteUserById(id);
 
-        _context.Users.Remove(user);
-        await _context.SaveChangesAsync();
+        if (!serviceResponse.Success)
+        {
+            return NotFound(serviceResponse);
+        }
 
         return NoContent();
     }
 
-    private bool UserExists(int id)
-    {
-        return (_context.Users?.Any(e => e.ID == id)).GetValueOrDefault();
-    }
 }

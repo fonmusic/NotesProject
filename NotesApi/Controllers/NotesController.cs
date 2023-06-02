@@ -6,40 +6,33 @@ namespace NotesApi.Controllers;
 [ApiController]
 public class NotesController : ControllerBase
 {
-    private readonly NotesContext _context;
+    private readonly INoteService _noteService;
 
-    public NotesController(NotesContext context)
+    public NotesController(INoteService noteService)
     {
-        _context = context;
+        _noteService = noteService;
     }
 
     // GET: api/Notes
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Note>>> GetNotes()
+    public async Task<ActionResult<ServiceResponse<IEnumerable<Note>>>> GetNotes()
     {
-        if (_context.Notes == null)
-        {
-            return NotFound();
-        }
-        return await _context.Notes.ToListAsync();
+        var serviceResponse = await _noteService.GetNotes();
+        return Ok(serviceResponse);
     }
 
     // GET: api/Notes/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<Note>> GetNote(int id)
+    public async Task<ActionResult<ServiceResponse<Note>>> GetNote(int id)
     {
-        if (_context.Notes == null)
-        {
-            return NotFound();
-        }
-        var note = await _context.Notes.FindAsync(id);
+        var serviceResponse = await _noteService.GetNoteById(id);
 
-        if (note == null)
+        if (!serviceResponse.Success)
         {
-            return NotFound();
+            return NotFound(serviceResponse);
         }
 
-        return note;
+        return Ok(serviceResponse);
     }
 
     // PUT: api/Notes/5
@@ -47,27 +40,11 @@ public class NotesController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> PutNote(int id, Note note)
     {
-        if (id != note.ID)
-        {
-            return BadRequest();
-        }
+        var serviceResponse = await _noteService.UpdateNote(id, note);
 
-        _context.Entry(note).State = EntityState.Modified;
-
-        try
+        if (!serviceResponse.Success)
         {
-            await _context.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!NoteExists(id))
-            {
-                return NotFound();
-            }
-            else
-            {
-                throw;
-            }
+            return BadRequest(serviceResponse);
         }
 
         return NoContent();
@@ -76,40 +53,24 @@ public class NotesController : ControllerBase
     // POST: api/Notes
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<Note>> PostNote(Note note)
+    public async Task<ActionResult<ServiceResponse<Note>>> PostNote(Note note)
     {
-        if (_context.Notes == null)
-        {
-            return Problem("Entity set 'NotesContext.Notes'  is null.");
-        }
-        _context.Notes.Add(note);
-        await _context.SaveChangesAsync();
-
-        return CreatedAtAction("GetNote", new { id = note.ID }, note);
+        var serviceResponse = await _noteService.CreateNote(note);
+        return CreatedAtAction(nameof(GetNote), new { id = serviceResponse.Data.ID }, serviceResponse);
     }
 
     // DELETE: api/Notes/5
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteNote(int id)
     {
-        if (_context.Notes == null)
-        {
-            return NotFound();
-        }
-        var note = await _context.Notes.FindAsync(id);
-        if (note == null)
-        {
-            return NotFound();
-        }
+        var serviceResponse = await _noteService.DeleteNoteById(id);
 
-        _context.Notes.Remove(note);
-        await _context.SaveChangesAsync();
+        if (!serviceResponse.Success)
+        {
+            return NotFound(serviceResponse);
+        }
 
         return NoContent();
     }
 
-    private bool NoteExists(int id)
-    {
-        return (_context.Notes?.Any(e => e.ID == id)).GetValueOrDefault();
-    }
 }

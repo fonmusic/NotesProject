@@ -56,6 +56,10 @@ public class NotesController : ControllerBase
     public async Task<ActionResult<ServiceResponse<Note>>> PostNote(Note note)
     {
         var serviceResponse = await _noteService.CreateNote(note);
+        if (serviceResponse.Data == null)
+        {
+            return BadRequest(serviceResponse);
+        }
         return CreatedAtAction(nameof(GetNote), new { id = serviceResponse.Data.ID }, serviceResponse);
     }
 

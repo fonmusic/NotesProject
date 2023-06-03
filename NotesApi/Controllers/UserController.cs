@@ -54,6 +54,10 @@ public class UserController : ControllerBase
     public async Task<ActionResult<ServiceResponse<User>>> PostUser(User user)
     {
         var serviceResponse = await _userService.CreateUser(user);
+        if (serviceResponse.Data == null)
+        {
+            return BadRequest(serviceResponse);
+        }
         return CreatedAtAction(nameof(GetUser), new { id = serviceResponse.Data.ID }, serviceResponse);
     }
 

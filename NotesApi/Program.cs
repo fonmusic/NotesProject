@@ -4,6 +4,8 @@ global using NotesApi.Models;
 global using NotesApi.Data;
 global using NotesApi.Services.NoteService;
 global using NotesApi.Services.UserService; 
+global using NotesApi.Dtos.Note;
+global using NotesApi.Dtos.User;
 
 var builder = WebApplication.CreateBuilder(args);
 

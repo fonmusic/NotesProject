@@ -15,7 +15,7 @@ public class NotesController : ControllerBase
 
     // GET: api/Notes
     [HttpGet]
-    public async Task<ActionResult<ServiceResponse<IEnumerable<Note>>>> GetNotes()
+    public async Task<ActionResult<ServiceResponse<IEnumerable<GetNoteDto>>>> GetNotes()
     {
         var serviceResponse = await _noteService.GetNotes();
         return Ok(serviceResponse);
@@ -23,7 +23,7 @@ public class NotesController : ControllerBase
 
     // GET: api/Notes/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<ServiceResponse<Note>>> GetNote(int id)
+    public async Task<ActionResult<ServiceResponse<GetNoteDto>>> GetNote(int id)
     {
         var serviceResponse = await _noteService.GetNoteById(id);
 
@@ -38,9 +38,9 @@ public class NotesController : ControllerBase
     // PUT: api/Notes/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutNote(int id, Note note)
+    public async Task<IActionResult> PutNote(int id, UpdateNoteDto noteDto)
     {
-        var serviceResponse = await _noteService.UpdateNote(id, note);
+        var serviceResponse = await _noteService.UpdateNote(id, noteDto);
 
         if (!serviceResponse.Success)
         {
@@ -53,9 +53,9 @@ public class NotesController : ControllerBase
     // POST: api/Notes
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<ServiceResponse<Note>>> PostNote(Note note)
+    public async Task<ActionResult<ServiceResponse<GetNoteDto>>> PostNote(AddNoteDto noteDto)
     {
-        var serviceResponse = await _noteService.CreateNote(note);
+        var serviceResponse = await _noteService.CreateNote(noteDto);
         if (serviceResponse.Data == null)
         {
             return BadRequest(serviceResponse);

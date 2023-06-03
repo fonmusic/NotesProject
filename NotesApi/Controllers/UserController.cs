@@ -15,7 +15,7 @@ public class UserController : ControllerBase
 
     // GET: api/User
     [HttpGet]
-    public async Task<ActionResult<ServiceResponse<IEnumerable<User>>>> GetUsers()
+    public async Task<ActionResult<ServiceResponse<IEnumerable<GetUserDto>>>> GetUsers()
     {
         var serviceResponse = await _userService.GetUsers();
         return Ok(serviceResponse);
@@ -23,7 +23,7 @@ public class UserController : ControllerBase
 
     // GET: api/User/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<ServiceResponse<User>>> GetUser(int id)
+    public async Task<ActionResult<ServiceResponse<GetUserDto>>> GetUser(int id)
     {
         var serviceResponse = await _userService.GetUserById(id);
 
@@ -37,9 +37,9 @@ public class UserController : ControllerBase
 
     // PUT: api/User/5
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutUser(int id, User user)
+    public async Task<IActionResult> PutUser(int id, UpdateUserDto userDto)
     {
-        var serviceResponse = await _userService.UpdateUser(id, user);
+        var serviceResponse = await _userService.UpdateUser(id, userDto);
 
         if (!serviceResponse.Success)
         {
@@ -51,9 +51,9 @@ public class UserController : ControllerBase
 
     // POST: api/User
     [HttpPost]
-    public async Task<ActionResult<ServiceResponse<User>>> PostUser(User user)
+    public async Task<ActionResult<ServiceResponse<GetUserDto>>> PostUser(AddUserDto userDto)
     {
-        var serviceResponse = await _userService.CreateUser(user);
+        var serviceResponse = await _userService.CreateUser(userDto);
         if (serviceResponse.Data == null)
         {
             return BadRequest(serviceResponse);

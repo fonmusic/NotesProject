@@ -3,51 +3,52 @@ namespace NotesApi.Services.NoteService;
 public class NoteService : INoteService
 {
     private readonly NotesContext _context;
+    private readonly IMapper _mapper;
 
-    public NoteService(NotesContext context)
+    public NoteService(NotesContext context, IMapper mapper)
     {
         _context = context;
+        _mapper = mapper;
     }
 
-    public async Task<ServiceResponse<IEnumerable<Note>>> GetNotes()
+    public async Task<ServiceResponse<IEnumerable<GetNoteDto>>> GetNotes()
     {
-        var serviceResponse = new ServiceResponse<IEnumerable<Note>>();
-
-        serviceResponse.Data = await _context.Notes.ToListAsync();
+        var serviceResponse = new ServiceResponse<IEnumerable<GetNoteDto>>();
+        var notes = await _context.Notes.ToListAsync();
+        serviceResponse.Data = _mapper.Map<IEnumerable<GetNoteDto>>(notes);
 
         return serviceResponse;
     }
 
-    public async Task<ServiceResponse<Note>> GetNoteById(int id)
+    public async Task<ServiceResponse<GetNoteDto>> GetNoteById(int id)
     {
-        var serviceResponse = new ServiceResponse<Note>();
-
-        serviceResponse.Data = await _context.Notes.FindAsync(id);
-
-        if (serviceResponse.Data == null)
+        var serviceResponse = new ServiceResponse<GetNoteDto>();
+        var note = await _context.Notes.FindAsync(id);
+        if (note == null)
         {
             serviceResponse.Success = false;
             serviceResponse.Message = "Note not found.";
+            return serviceResponse;
         }
-
+        serviceResponse.Data = _mapper.Map<GetNoteDto>(note);
         return serviceResponse;
     }
 
-    public async Task<ServiceResponse<Note>> CreateNote(Note note)
+    public async Task<ServiceResponse<GetNoteDto>> CreateNote(AddNoteDto noteDto)
     {
-        var serviceResponse = new ServiceResponse<Note>();
+        var serviceResponse = new ServiceResponse<GetNoteDto>();
+        var note = _mapper.Map<Note>(noteDto);
 
         _context.Notes.Add(note);
         await _context.SaveChangesAsync();
 
-        serviceResponse.Data = note;
-
+        serviceResponse.Data = _mapper.Map<GetNoteDto>(note);
         return serviceResponse;
     }
 
-    public async Task<ServiceResponse<Note>> UpdateNote(int id, Note note)
+    public async Task<ServiceResponse<GetNoteDto>> UpdateNote(int id, UpdateNoteDto noteDto)
     {
-        var serviceResponse = new ServiceResponse<Note>();
+        var serviceResponse = new ServiceResponse<GetNoteDto>();
 
         var existingNote = await _context.Notes.FindAsync(id);
 
@@ -58,13 +59,12 @@ public class NoteService : INoteService
             return serviceResponse;
         }
 
-        existingNote.Title = note.Title;
-        existingNote.Text = note.Text;
-        existingNote.UpdatedDate = note.UpdatedDate;
+        _mapper.Map(noteDto, existingNote);
+        existingNote.UpdatedDate = DateTime.UtcNow;
 
         await _context.SaveChangesAsync();
 
-        serviceResponse.Data = existingNote;
+        serviceResponse.Data = _mapper.Map<GetNoteDto>(existingNote);
 
         return serviceResponse;
     }

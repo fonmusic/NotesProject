@@ -24,7 +24,7 @@ public class NoteService : INoteService
     {
         var serviceResponse = new ServiceResponse<GetNoteDto>();
         var note = await _context.Notes.FindAsync(id);
-        if (note == null)
+        if (note is null)
         {
             serviceResponse.Success = false;
             serviceResponse.Message = "Note not found.";
@@ -39,6 +39,8 @@ public class NoteService : INoteService
         var serviceResponse = new ServiceResponse<GetNoteDto>();
         var note = _mapper.Map<Note>(noteDto);
 
+        note.CreatedDate = DateTime.UtcNow;
+        note.UpdatedDate = DateTime.UtcNow;
         _context.Notes.Add(note);
         await _context.SaveChangesAsync();
 
@@ -52,7 +54,7 @@ public class NoteService : INoteService
 
         var existingNote = await _context.Notes.FindAsync(id);
 
-        if (existingNote == null)
+        if (existingNote is null)
         {
             serviceResponse.Success = false;
             serviceResponse.Message = "Note not found.";
@@ -75,7 +77,7 @@ public class NoteService : INoteService
 
         var existingNote = await _context.Notes.FindAsync(id);
 
-        if (existingNote == null)
+        if (existingNote is null)
         {
             serviceResponse.Success = false;
             serviceResponse.Message = "Note not found.";

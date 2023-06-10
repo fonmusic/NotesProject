@@ -24,7 +24,7 @@ public class UserService : IUserService
     {
         var serviceResponse = new ServiceResponse<GetUserDto>();
         var user = await _context.Users.FindAsync(id);
-        if (user == null)
+        if (user is null)
         {
             serviceResponse.Success = false;
             serviceResponse.Message = "User not found.";
@@ -52,7 +52,7 @@ public class UserService : IUserService
 
         var existingUser = await _context.Users.FindAsync(id);
 
-        if (existingUser == null)
+        if (existingUser is null)
         {
             serviceResponse.Success = false;
             serviceResponse.Message = "User not found.";
@@ -74,7 +74,7 @@ public class UserService : IUserService
 
         var existingUser = await _context.Users.FindAsync(id);
 
-        if (existingUser == null)
+        if (existingUser is null)
         {
             serviceResponse.Success = false;
             serviceResponse.Message = "User not found.";

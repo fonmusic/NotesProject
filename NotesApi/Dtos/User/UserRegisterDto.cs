@@ -1,6 +1,6 @@
 namespace NotesApi.Dtos.User;
 
-public class AddUserDto
+public class UserRegisterDto
 {
     public required string Username { get; set; }
     public required string Password { get; set; }

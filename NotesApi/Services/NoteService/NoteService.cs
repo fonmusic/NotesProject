@@ -2,10 +2,10 @@ namespace NotesApi.Services.NoteService;
 
 public class NoteService : INoteService
 {
-    private readonly NotesContext _context;
+    private readonly DataContext _context;
     private readonly IMapper _mapper;
 
-    public NoteService(NotesContext context, IMapper mapper)
+    public NoteService(DataContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;

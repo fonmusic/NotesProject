@@ -10,7 +10,7 @@ using NotesApi.Data;
 
 namespace NotesApi.Migrations
 {
-    [DbContext(typeof(NotesContext))]
+    [DbContext(typeof(DataContext))]
     [Migration("20230610193259_UserPasswordHash")]
     partial class UserPasswordHash
     {

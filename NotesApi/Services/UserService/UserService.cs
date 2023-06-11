@@ -2,10 +2,10 @@ namespace NotesApi.Services.UserService;
 
 public class UserService : IUserService
 {
-    private readonly NotesContext _context;
+    private readonly DataContext _context;
     private readonly IMapper _mapper;
 
-    public UserService(NotesContext context, IMapper mapper)
+    public UserService(DataContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;

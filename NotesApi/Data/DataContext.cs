@@ -1,8 +1,8 @@
 namespace NotesApi.Data;
 
-public class NotesContext : DbContext
+public class DataContext : DbContext
 {
-    public NotesContext(DbContextOptions<NotesContext> options) : base(options)
+    public DataContext(DbContextOptions<DataContext> options) : base(options)
     {        
     }
 

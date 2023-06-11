@@ -9,7 +9,7 @@ using NotesApi.Data;
 
 namespace NotesApi.Migrations
 {
-    [DbContext(typeof(NotesContext))]
+    [DbContext(typeof(DataContext))]
     partial class NotesContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

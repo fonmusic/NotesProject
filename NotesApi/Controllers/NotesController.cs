@@ -58,7 +58,7 @@ public class NotesController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<ServiceResponse<GetNoteDto>>> PostNote(AddNoteDto noteDto)
     {
-        var serviceResponse = await _noteService.CreateNote(noteDto);
+        var serviceResponse = await _noteService.AddNote(noteDto);
         if (serviceResponse.Data == null)
         {
             return BadRequest(serviceResponse);

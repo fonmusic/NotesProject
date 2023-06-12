@@ -41,17 +41,23 @@ public class NoteService : INoteService
         return serviceResponse;
     }
 
-    public async Task<ServiceResponse<GetNoteDto>> CreateNote(AddNoteDto noteDto)
+    public async Task<ServiceResponse<GetNoteDto>> AddNote(AddNoteDto noteDto)
     {
         var serviceResponse = new ServiceResponse<GetNoteDto>();
         var note = _mapper.Map<Note>(noteDto);
+        note.User = await _context.Users.FirstOrDefaultAsync(u => u.Id == GetUserId());
 
         note.CreatedDate = DateTime.UtcNow;
         note.UpdatedDate = DateTime.UtcNow;
+
         _context.Notes.Add(note);
         await _context.SaveChangesAsync();
 
-        serviceResponse.Data = _mapper.Map<GetNoteDto>(note);
+        serviceResponse.Data =
+            await _context.Notes
+            .Where(n => n.User!.Id == GetUserId())
+            .Select(n => _mapper.Map<GetNoteDto>(n))
+            .FirstOrDefaultAsync();
         return serviceResponse;
     }
 

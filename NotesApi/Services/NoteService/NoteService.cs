@@ -1,20 +1,27 @@
+using System.Security.Claims;
+
 namespace NotesApi.Services.NoteService;
 
 public class NoteService : INoteService
 {
     private readonly DataContext _context;
     private readonly IMapper _mapper;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public NoteService(DataContext context, IMapper mapper)
+    public NoteService(DataContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor)
     {
         _context = context;
         _mapper = mapper;
+        _httpContextAccessor = httpContextAccessor;
     }
 
-    public async Task<ServiceResponse<IEnumerable<GetNoteDto>>> GetAllNotes(int userId)
+    private int GetUserId() => int.Parse(_httpContextAccessor.HttpContext!.User
+             .FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+    public async Task<ServiceResponse<IEnumerable<GetNoteDto>>> GetAllNotes()
     {
         var serviceResponse = new ServiceResponse<IEnumerable<GetNoteDto>>();
-        var notes = await _context.Notes.Where(n => n.User!.Id == userId).ToListAsync();
+        var notes = await _context.Notes.Where(n => n.User!.Id == GetUserId()).ToListAsync();
         serviceResponse.Data = _mapper.Map<IEnumerable<GetNoteDto>>(notes);
 
         return serviceResponse;

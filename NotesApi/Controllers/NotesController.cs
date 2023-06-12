@@ -20,8 +20,7 @@ public class NotesController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<ServiceResponse<IEnumerable<GetNoteDto>>>> GetNotes()
     {
-        int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)!.Value);
-        var serviceResponse = await _noteService.GetAllNotes(userId);
+        var serviceResponse = await _noteService.GetAllNotes();
         return Ok(serviceResponse);
     }
 

@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace NotesApi.Controllers;
 
-[Route("api/[controller]")]
+[Authorize]
 [ApiController]
+[Route("api/[controller]")]
 public class NotesController : ControllerBase
 {
     private readonly INoteService _noteService;

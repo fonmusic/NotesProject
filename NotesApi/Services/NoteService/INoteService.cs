@@ -2,7 +2,7 @@ namespace NotesApi.Services.NoteService;
 
 public interface INoteService
 {
-    Task<ServiceResponse<IEnumerable<GetNoteDto>>> GetNotes();
+    Task<ServiceResponse<IEnumerable<GetNoteDto>>> GetAllNotes(int userId);
     Task<ServiceResponse<GetNoteDto>> GetNoteById(int id);
     Task<ServiceResponse<GetNoteDto>> CreateNote(AddNoteDto noteDto);
     Task<ServiceResponse<GetNoteDto>> UpdateNote(int id, UpdateNoteDto noteDto);

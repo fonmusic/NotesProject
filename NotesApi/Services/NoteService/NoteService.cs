@@ -11,10 +11,10 @@ public class NoteService : INoteService
         _mapper = mapper;
     }
 
-    public async Task<ServiceResponse<IEnumerable<GetNoteDto>>> GetNotes()
+    public async Task<ServiceResponse<IEnumerable<GetNoteDto>>> GetAllNotes(int userId)
     {
         var serviceResponse = new ServiceResponse<IEnumerable<GetNoteDto>>();
-        var notes = await _context.Notes.ToListAsync();
+        var notes = await _context.Notes.Where(n => n.User!.Id == userId).ToListAsync();
         serviceResponse.Data = _mapper.Map<IEnumerable<GetNoteDto>>(notes);
 
         return serviceResponse;

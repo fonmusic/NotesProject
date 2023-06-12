@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace NotesApi.Controllers;
 
@@ -19,7 +20,8 @@ public class NotesController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<ServiceResponse<IEnumerable<GetNoteDto>>>> GetNotes()
     {
-        var serviceResponse = await _noteService.GetNotes();
+        int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)!.Value);
+        var serviceResponse = await _noteService.GetAllNotes(userId);
         return Ok(serviceResponse);
     }
 

@@ -8,6 +8,4 @@ public class User
     public byte[] PasswordSalt { get; set; } = new byte[0];
     public List<Note>? Notes { get; set; }
     
-    
-    // public string Password { get; set; } = string.Empty;
 }

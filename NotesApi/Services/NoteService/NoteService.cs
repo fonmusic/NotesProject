@@ -68,9 +68,11 @@ public class NoteService : INoteService
     {
         var serviceResponse = new ServiceResponse<GetNoteDto>();
 
-        var existingNote = await _context.Notes.FindAsync(id);
+        var existingNote = await _context.Notes
+            .Include(n => n.User)
+            .FirstOrDefaultAsync(n => n.Id == noteDto.Id);
 
-        if (existingNote is null)
+        if (existingNote is null || existingNote.User!.Id != GetUserId())
         {
             serviceResponse.Success = false;
             serviceResponse.Message = $"""Note with Id "{id}" not found.""";

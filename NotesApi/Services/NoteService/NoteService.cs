@@ -21,7 +21,9 @@ public class NoteService : INoteService
     public async Task<ServiceResponse<IEnumerable<GetNoteDto>>> GetAllNotes()
     {
         var serviceResponse = new ServiceResponse<IEnumerable<GetNoteDto>>();
-        var notes = await _context.Notes.Where(n => n.User!.Id == GetUserId()).ToListAsync();
+        var notes = await _context.Notes
+            .Where(n => n.User!.Id == GetUserId())
+            .ToListAsync();
         serviceResponse.Data = _mapper.Map<IEnumerable<GetNoteDto>>(notes);
 
         return serviceResponse;
@@ -30,11 +32,12 @@ public class NoteService : INoteService
     public async Task<ServiceResponse<GetNoteDto>> GetNoteById(int id)
     {
         var serviceResponse = new ServiceResponse<GetNoteDto>();
-        var note = await _context.Notes.FindAsync(id);
+        var note = await _context.Notes
+            .FirstOrDefaultAsync(n => n.Id == id && n.User!.Id == GetUserId());
         if (note is null)
         {
             serviceResponse.Success = false;
-            serviceResponse.Message = "Note not found.";
+            serviceResponse.Message = $"""Note with Id "{id}" not found.""";
             return serviceResponse;
         }
         serviceResponse.Data = _mapper.Map<GetNoteDto>(note);
@@ -70,7 +73,7 @@ public class NoteService : INoteService
         if (existingNote is null)
         {
             serviceResponse.Success = false;
-            serviceResponse.Message = "Note not found.";
+            serviceResponse.Message = $"""Note with Id "{id}" not found.""";
             return serviceResponse;
         }
 
@@ -88,12 +91,13 @@ public class NoteService : INoteService
     {
         var serviceResponse = new ServiceResponse<bool>();
 
-        var existingNote = await _context.Notes.FindAsync(id);
+        var existingNote = await _context.Notes
+            .FirstOrDefaultAsync(n => n.Id == id && n.User!.Id == GetUserId());
 
         if (existingNote is null)
         {
             serviceResponse.Success = false;
-            serviceResponse.Message = "Note not found.";
+            serviceResponse.Message = $"""Note with Id "{id}" not found.""";
             return serviceResponse;
         }
 

@@ -59,7 +59,7 @@ public class NotesController : ControllerBase
     public async Task<ActionResult<ServiceResponse<GetNoteDto>>> PostNote(AddNoteDto noteDto)
     {
         var serviceResponse = await _noteService.AddNote(noteDto);
-        if (serviceResponse.Data == null)
+        if (serviceResponse.Data is null)
         {
             return BadRequest(serviceResponse);
         }

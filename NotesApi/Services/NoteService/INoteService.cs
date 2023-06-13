@@ -4,7 +4,8 @@ public interface INoteService
 {
     Task<ServiceResponse<IEnumerable<GetNoteDto>>> GetAllNotes();
     Task<ServiceResponse<GetNoteDto>> GetNoteById(int id);
-    Task<ServiceResponse<GetNoteDto>> AddNote(AddNoteDto noteDto);
-    Task<ServiceResponse<GetNoteDto>> UpdateNote(int id, UpdateNoteDto noteDto);
+    Task<ServiceResponse<IEnumerable<GetNoteDto>>> GetNoteByTitle(string title);
+    Task<ServiceResponse<GetNoteDto>> AddNote(AddNoteDto newNote);
+    Task<ServiceResponse<GetNoteDto>> UpdateNote(int id, UpdateNoteDto updatedNote);
     Task<ServiceResponse<bool>> DeleteNoteById(int id);
 }

@@ -16,15 +16,13 @@ public class NotesController : ControllerBase
         _noteService = noteService;
     }
 
-    // GET: api/Notes
-    [HttpGet]
+    [HttpGet("GetAll")]
     public async Task<ActionResult<ServiceResponse<IEnumerable<GetNoteDto>>>> GetNotes()
     {
         var serviceResponse = await _noteService.GetAllNotes();
         return Ok(serviceResponse);
     }
 
-    // GET: api/Notes/5
     [HttpGet("{id}")]
     public async Task<ActionResult<ServiceResponse<GetNoteDto>>> GetNote(int id)
     {
@@ -38,27 +36,36 @@ public class NotesController : ControllerBase
         return Ok(serviceResponse);
     }
 
-    // PUT: api/Notes/5
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [HttpPut("{id}")]
-    public async Task<IActionResult> PutNote(int id, UpdateNoteDto noteDto)
+    [HttpGet("title/{title}")]
+    public async Task<ActionResult<ServiceResponse<IEnumerable<GetNoteDto>>>> GetNoteByTitle([FromRoute] string title)
     {
-        var serviceResponse = await _noteService.UpdateNote(id, noteDto);
+        var serviceResponse = await _noteService.GetNoteByTitle(title);
+
+        if (!serviceResponse.Success)
+        {
+            return NotFound(serviceResponse);
+        }
+
+        return Ok(serviceResponse);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> PutNote(int id, UpdateNoteDto updatetNote)
+    {
+        var serviceResponse = await _noteService.UpdateNote(id, updatetNote);
 
         if (!serviceResponse.Success)
         {
             return BadRequest(serviceResponse);
         }
 
-        return NoContent();
+        return Ok(serviceResponse);
     }
 
-    // POST: api/Notes
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<ServiceResponse<GetNoteDto>>> PostNote(AddNoteDto noteDto)
+    public async Task<ActionResult<ServiceResponse<GetNoteDto>>> PostNote(AddNoteDto newNote)
     {
-        var serviceResponse = await _noteService.AddNote(noteDto);
+        var serviceResponse = await _noteService.AddNote(newNote);
         if (serviceResponse.Data is null)
         {
             return BadRequest(serviceResponse);
@@ -66,7 +73,6 @@ public class NotesController : ControllerBase
         return CreatedAtAction(nameof(GetNote), new { id = serviceResponse.Data.ID }, serviceResponse);
     }
 
-    // DELETE: api/Notes/5
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteNote(int id)
     {

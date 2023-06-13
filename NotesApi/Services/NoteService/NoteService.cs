@@ -44,10 +44,36 @@ public class NoteService : INoteService
         return serviceResponse;
     }
 
-    public async Task<ServiceResponse<GetNoteDto>> AddNote(AddNoteDto noteDto)
+    public async Task<ServiceResponse<IEnumerable<GetNoteDto>>> GetNoteByTitle(string title)
+    {
+        var serviceResponse = new ServiceResponse<IEnumerable<GetNoteDto>>();
+
+        var notes = await _context.Notes
+            .Where(n => n.User!.Id == GetUserId())
+            .ToListAsync();
+
+        var filteredNotes = notes.Where(n =>
+            n.Title.IndexOf(title, StringComparison.OrdinalIgnoreCase) >= 0 ||
+            title.Split(' ').Any(word => n.Title.IndexOf(word, StringComparison.OrdinalIgnoreCase) >= 0)
+        ).ToList();
+
+        if (filteredNotes.Count == 0)
+        {
+            serviceResponse.Success = false;
+            serviceResponse.Message = $"Notes with Title \"{title}\" not found.";
+            return serviceResponse;
+        }
+
+        var mappedNotes = filteredNotes.Select(n => _mapper.Map<GetNoteDto>(n));
+        serviceResponse.Data = mappedNotes;
+
+        return serviceResponse;
+    }
+
+    public async Task<ServiceResponse<GetNoteDto>> AddNote(AddNoteDto newNote)
     {
         var serviceResponse = new ServiceResponse<GetNoteDto>();
-        var note = _mapper.Map<Note>(noteDto);
+        var note = _mapper.Map<Note>(newNote);
         note.User = await _context.Users.FirstOrDefaultAsync(u => u.Id == GetUserId());
 
         note.CreatedDate = DateTime.UtcNow;
@@ -56,35 +82,34 @@ public class NoteService : INoteService
         _context.Notes.Add(note);
         await _context.SaveChangesAsync();
 
-        serviceResponse.Data =
-            await _context.Notes
-            .Where(n => n.User!.Id == GetUserId())
-            .Select(n => _mapper.Map<GetNoteDto>(n))
-            .FirstOrDefaultAsync();
+        serviceResponse.Data = _mapper.Map<GetNoteDto>(note);
+
         return serviceResponse;
     }
 
-    public async Task<ServiceResponse<GetNoteDto>> UpdateNote(int id, UpdateNoteDto noteDto)
+    public async Task<ServiceResponse<GetNoteDto>> UpdateNote(int id, UpdateNoteDto updatedNote)
     {
         var serviceResponse = new ServiceResponse<GetNoteDto>();
 
-        var existingNote = await _context.Notes
+        var note = await _context.Notes
             .Include(n => n.User)
-            .FirstOrDefaultAsync(n => n.Id == noteDto.Id);
+            .FirstOrDefaultAsync(n => n.Id == updatedNote.Id);
 
-        if (existingNote is null || existingNote.User!.Id != GetUserId())
+        if (note is null || note.User!.Id != GetUserId())
         {
             serviceResponse.Success = false;
             serviceResponse.Message = $"""Note with Id "{id}" not found.""";
             return serviceResponse;
         }
 
-        _mapper.Map(noteDto, existingNote);
-        existingNote.UpdatedDate = DateTime.UtcNow;
+        // _mapper.Map(updatedNote, note);
+        note.Title = updatedNote.Title;
+        note.Text = updatedNote.Text;
+        note.UpdatedDate = DateTime.UtcNow;
 
         await _context.SaveChangesAsync();
 
-        serviceResponse.Data = _mapper.Map<GetNoteDto>(existingNote);
+        serviceResponse.Data = _mapper.Map<GetNoteDto>(note);
 
         return serviceResponse;
     }

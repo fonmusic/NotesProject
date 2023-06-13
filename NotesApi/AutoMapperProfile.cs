@@ -5,11 +5,11 @@ public class AutoMapperProfile : Profile
     public AutoMapperProfile()
     {
         CreateMap<Note, GetNoteDto>();
-        CreateMap<Note, AddNoteDto>();
-        CreateMap<Note, UpdateNoteDto>();
+        CreateMap<AddNoteDto, Note>();
+        CreateMap<UpdateNoteDto, Note>();
 
         CreateMap<User, GetUserDto>();
-        CreateMap<User, AddUserDto>();
-        CreateMap<User, UpdateUserDto>();
+        CreateMap<AddUserDto, User>();
+        CreateMap<UpdateUserDto, User>();
     }
 }

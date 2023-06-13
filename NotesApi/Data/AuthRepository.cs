@@ -31,7 +31,7 @@ public class AuthRepository : IAuthRepository
         }
         else
         {
-            response.Data = user.Id.ToString();
+            response.Data = CreateToken(user);
         }
 
         return response;

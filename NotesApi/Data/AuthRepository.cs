@@ -31,6 +31,7 @@ public class AuthRepository : IAuthRepository
         }
         else
         {
+            response.Message = "You are logged in.";
             response.Data = CreateToken(user);
         }
 
@@ -54,29 +55,10 @@ public class AuthRepository : IAuthRepository
 
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
+        
         response.Data = user.Id;
-        return response;
-    }
-
-    public async Task<ServiceResponse<int>> AdminRegister(User user, string password)
-    {
-        var response = new ServiceResponse<int>();
-        if (await UserExists(user.Username))
-        {
-            response.Success = false;
-            response.Message = "User already exists.";
-            return response;
-        }
-
-        CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
-
-        user.PasswordHash = passwordHash;
-        user.PasswordSalt = passwordSalt;
-        user.IsAdmin = true; // Устанавливаем флаг администратора
-
-        _context.Users.Add(user);
-        await _context.SaveChangesAsync();
-        response.Data = user.Id;
+        response.Message = "You are registered.";
+        
         return response;
     }
 
@@ -101,12 +83,37 @@ public class AuthRepository : IAuthRepository
         }
         else
         {
+            response.Message = "You are logged in.";
             response.Data = CreateToken(user);
         }
 
         return response;
     }
 
+    public async Task<ServiceResponse<int>> AdminRegister(User user, string password)
+    {
+        var response = new ServiceResponse<int>();
+        if (await UserExists(user.Username))
+        {
+            response.Success = false;
+            response.Message = "User already exists.";
+            return response;
+        }
+
+        CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
+
+        user.PasswordHash = passwordHash;
+        user.PasswordSalt = passwordSalt;
+        user.IsAdmin = true; // Устанавливаем флаг администратора
+
+        _context.Users.Add(user);
+        await _context.SaveChangesAsync();
+        
+        response.Data = user.Id;
+        response.Message = "You are registered.";
+        
+        return response;
+    }
 
     public async Task<bool> UserExists(string username)
     {

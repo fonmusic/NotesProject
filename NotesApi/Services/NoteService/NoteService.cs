@@ -26,6 +26,8 @@ public class NoteService : INoteService
             .ToListAsync();
         serviceResponse.Data = _mapper.Map<IEnumerable<GetNoteDto>>(notes);
 
+        serviceResponse.Message = "That's all your notes.";
+
         return serviceResponse;
     }
 
@@ -41,6 +43,9 @@ public class NoteService : INoteService
             return serviceResponse;
         }
         serviceResponse.Data = _mapper.Map<GetNoteDto>(note);
+
+        serviceResponse.Message = $"""Here's a note with Id "{id}".""";
+
         return serviceResponse;
     }
 
@@ -65,7 +70,9 @@ public class NoteService : INoteService
         }
 
         var mappedNotes = filteredNotes.Select(n => _mapper.Map<GetNoteDto>(n));
+        
         serviceResponse.Data = mappedNotes;
+        serviceResponse.Message = $"""Here's a notes with Title "{title}".""";
 
         return serviceResponse;
     }
@@ -83,6 +90,8 @@ public class NoteService : INoteService
         await _context.SaveChangesAsync();
 
         serviceResponse.Data = _mapper.Map<GetNoteDto>(note);
+
+        serviceResponse.Message = "The note added.";
 
         return serviceResponse;
     }
@@ -102,7 +111,6 @@ public class NoteService : INoteService
             return serviceResponse;
         }
 
-        // _mapper.Map(updatedNote, note);
         note.Title = updatedNote.Title;
         note.Text = updatedNote.Text;
         note.UpdatedDate = DateTime.UtcNow;
@@ -110,6 +118,8 @@ public class NoteService : INoteService
         await _context.SaveChangesAsync();
 
         serviceResponse.Data = _mapper.Map<GetNoteDto>(note);
+
+        serviceResponse.Message = "The note updated.";
 
         return serviceResponse;
     }
@@ -132,6 +142,7 @@ public class NoteService : INoteService
         await _context.SaveChangesAsync();
 
         serviceResponse.Data = true;
+        serviceResponse.Message = "The note deleted.";
 
         return serviceResponse;
     }

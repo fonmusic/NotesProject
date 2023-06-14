@@ -75,7 +75,7 @@ public class NotesController : ControllerBase
         {
             return BadRequest(serviceResponse);
         }
-        return CreatedAtAction(nameof(GetNote), new { id = serviceResponse.Data.ID }, serviceResponse);
+        return CreatedAtAction(nameof(GetNote), new { id = serviceResponse.Data.Id }, serviceResponse);
     }
 
     [HttpDelete("DeleteNoteById/{id}")]

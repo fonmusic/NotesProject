@@ -17,6 +17,8 @@ public class AdminService : IAdminService
         var users = await _context.Users.ToListAsync();        
         serviceResponse.Data = _mapper.Map<IEnumerable<GetUserDto>>(users);
 
+        serviceResponse.Message = "That's all users.";
+        
         return serviceResponse;
     }
 
@@ -27,10 +29,13 @@ public class AdminService : IAdminService
         if (user is null)
         {
             serviceResponse.Success = false;
-            serviceResponse.Message = "User not found.";
+            serviceResponse.Message = $"""User with Id "{id}" not found.""";
             return serviceResponse;
         }
         serviceResponse.Data = _mapper.Map<GetUserDto>(user);
+
+        serviceResponse.Message = $"""Here's a user with Id "{id}".""";
+
         return serviceResponse;
     }
 
@@ -43,7 +48,7 @@ public class AdminService : IAdminService
         if (user is null)
         {
             serviceResponse.Success = false;
-            serviceResponse.Message = "User not found.";
+            serviceResponse.Message = $"""User with Id "{id}" not found.""";
             return serviceResponse;
         }
 
@@ -52,6 +57,8 @@ public class AdminService : IAdminService
         await _context.SaveChangesAsync();
 
         serviceResponse.Data = _mapper.Map<GetUserDto>(user);
+
+        serviceResponse.Message = "The user updated.";
 
         return serviceResponse;
     }
@@ -65,7 +72,7 @@ public class AdminService : IAdminService
         if (user is null)
         {
             serviceResponse.Success = false;
-            serviceResponse.Message = "User not found.";
+            serviceResponse.Message = $"""User with Id "{id}" not found.""";
             return serviceResponse;
         }
 
@@ -73,6 +80,8 @@ public class AdminService : IAdminService
         await _context.SaveChangesAsync();
 
         serviceResponse.Data = true;
+
+        serviceResponse.Message = "The user deleted.";
 
         return serviceResponse;
     }

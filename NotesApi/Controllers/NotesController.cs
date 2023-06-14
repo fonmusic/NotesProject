@@ -16,14 +16,16 @@ public class NotesController : ControllerBase
         _noteService = noteService;
     }
 
-    [HttpGet("GetAll")]
+    [HttpGet("GetAllNotes")]
+    [Authorize(Roles = "User")]
     public async Task<ActionResult<ServiceResponse<IEnumerable<GetNoteDto>>>> GetNotes()
     {
         var serviceResponse = await _noteService.GetAllNotes();
         return Ok(serviceResponse);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("GetNoteById{id}")]
+    [Authorize(Roles = "User")]
     public async Task<ActionResult<ServiceResponse<GetNoteDto>>> GetNote(int id)
     {
         var serviceResponse = await _noteService.GetNoteById(id);
@@ -36,7 +38,8 @@ public class NotesController : ControllerBase
         return Ok(serviceResponse);
     }
 
-    [HttpGet("title/{title}")]
+    [HttpGet("GetNoteByTitle/{title}")]
+    [Authorize(Roles = "User")]
     public async Task<ActionResult<ServiceResponse<IEnumerable<GetNoteDto>>>> GetNoteByTitle([FromRoute] string title)
     {
         var serviceResponse = await _noteService.GetNoteByTitle(title);
@@ -49,7 +52,8 @@ public class NotesController : ControllerBase
         return Ok(serviceResponse);
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("EditNote{id}")]
+    [Authorize(Roles = "User")]
     public async Task<IActionResult> PutNote(int id, UpdateNoteDto updatetNote)
     {
         var serviceResponse = await _noteService.UpdateNote(id, updatetNote);
@@ -62,7 +66,8 @@ public class NotesController : ControllerBase
         return Ok(serviceResponse);
     }
 
-    [HttpPost]
+    [HttpPost("CreateNote")]
+    [Authorize(Roles = "User")]
     public async Task<ActionResult<ServiceResponse<GetNoteDto>>> PostNote(AddNoteDto newNote)
     {
         var serviceResponse = await _noteService.AddNote(newNote);
@@ -73,7 +78,8 @@ public class NotesController : ControllerBase
         return CreatedAtAction(nameof(GetNote), new { id = serviceResponse.Data.ID }, serviceResponse);
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("DeleteNoteById/{id}")]
+    [Authorize(Roles = "User")]
     public async Task<IActionResult> DeleteNote(int id)
     {
         var serviceResponse = await _noteService.DeleteNoteById(id);

@@ -15,16 +15,16 @@ public class AdminController : ControllerBase
         _adminService = adminService;
     }
 
-    [HttpGet]
-    [Authorize(Roles = "admin")]
+    [HttpGet("GetAllUsers")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<ServiceResponse<IEnumerable<GetUserDto>>>> GetUsers()
     {
         var serviceResponse = await _adminService.GetUsers();
         return Ok(serviceResponse);
     }
 
-    [HttpGet("{id}")]
-    [Authorize(Roles = "admin")]
+    [HttpGet("GetUsersById/{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<ServiceResponse<GetUserDto>>> GetUser(int id)
     {
         var serviceResponse = await _adminService.GetUserById(id);
@@ -37,8 +37,8 @@ public class AdminController : ControllerBase
         return Ok(serviceResponse);
     }
 
-    [HttpPut("{id}")]
-    [Authorize(Roles = "admin")]
+    [HttpPut("EditUsers/{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> PutUser(int id, UpdateUserDto userDto)
     {
         var serviceResponse = await _adminService.UpdateUser(id, userDto);
@@ -51,8 +51,8 @@ public class AdminController : ControllerBase
         return NoContent();
     }
 
-    [HttpDelete("{id}")]
-    [Authorize(Roles = "admin")]
+    [HttpDelete("DeleteUserById{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteUser(int id)
     {
         var serviceResponse = await _adminService.DeleteUserById(id);

@@ -13,7 +13,7 @@ public class AuthController : ControllerBase
         _authRepo = authRepo;
     }
 
-    [HttpPost("Register")]
+    [HttpPost("User/Register")]
     public async Task<ActionResult<ServiceResponse<int>>> Register(UserRegisterDto request)
     {
         var response = await _authRepo.Register(
@@ -26,7 +26,7 @@ public class AuthController : ControllerBase
         return Ok(response);
     }
 
-    [HttpPost("Login")]
+    [HttpPost("User/Login")]
     public async Task<ActionResult<ServiceResponse<int>>> Login(UserLoginDto request)
     {
         var response = await _authRepo.Login(request.Username, request.Password);

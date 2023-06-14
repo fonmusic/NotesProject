@@ -1,11 +1,11 @@
-namespace NotesApi.Services.UserService;
+namespace NotesApi.Services.AdminService;
 
-public class UserService : IUserService
+public class AdminService : IAdminService
 {
     private readonly DataContext _context;
     private readonly IMapper _mapper;
 
-    public UserService(DataContext context, IMapper mapper)
+    public AdminService(DataContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;
@@ -34,36 +34,24 @@ public class UserService : IUserService
         return serviceResponse;
     }
 
-    public async Task<ServiceResponse<GetUserDto>> CreateUser(AddUserDto userDto)
-    {
-        var serviceResponse = new ServiceResponse<GetUserDto>();
-        var user = _mapper.Map<User>(userDto);
-
-        _context.Users.Add(user);
-        await _context.SaveChangesAsync();
-
-        serviceResponse.Data = _mapper.Map<GetUserDto>(user);;
-        return serviceResponse;
-    }
-
-    public async Task<ServiceResponse<GetUserDto>> UpdateUser(int id, UpdateUserDto userDto)
+    public async Task<ServiceResponse<GetUserDto>> UpdateUser(int id, UpdateUserDto updatedUser)
     {
         var serviceResponse = new ServiceResponse<GetUserDto>();
 
-        var existingUser = await _context.Users.FindAsync(id);
+        var user = await _context.Users.FindAsync(id);
 
-        if (existingUser is null)
+        if (user is null)
         {
             serviceResponse.Success = false;
             serviceResponse.Message = "User not found.";
             return serviceResponse;
         }
 
-        _mapper.Map(userDto, existingUser);
+        _mapper.Map(updatedUser, user);
 
         await _context.SaveChangesAsync();
 
-        serviceResponse.Data = _mapper.Map<GetUserDto>(existingUser);
+        serviceResponse.Data = _mapper.Map<GetUserDto>(user);
 
         return serviceResponse;
     }
@@ -72,16 +60,16 @@ public class UserService : IUserService
     {
         var serviceResponse = new ServiceResponse<bool>();
 
-        var existingUser = await _context.Users.FindAsync(id);
+        var user = await _context.Users.FindAsync(id);
 
-        if (existingUser is null)
+        if (user is null)
         {
             serviceResponse.Success = false;
             serviceResponse.Message = "User not found.";
             return serviceResponse;
         }
 
-        _context.Users.Remove(existingUser);
+        _context.Users.Remove(user);
         await _context.SaveChangesAsync();
 
         serviceResponse.Data = true;

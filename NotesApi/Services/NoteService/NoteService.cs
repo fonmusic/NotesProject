@@ -118,17 +118,17 @@ public class NoteService : INoteService
     {
         var serviceResponse = new ServiceResponse<bool>();
 
-        var existingNote = await _context.Notes
+        var note = await _context.Notes
             .FirstOrDefaultAsync(n => n.Id == id && n.User!.Id == GetUserId());
 
-        if (existingNote is null)
+        if (note is null)
         {
             serviceResponse.Success = false;
             serviceResponse.Message = $"""Note with Id "{id}" not found.""";
             return serviceResponse;
         }
 
-        _context.Notes.Remove(existingNote);
+        _context.Notes.Remove(note);
         await _context.SaveChangesAsync();
 
         serviceResponse.Data = true;

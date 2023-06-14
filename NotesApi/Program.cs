@@ -3,7 +3,7 @@ global using Microsoft.EntityFrameworkCore;
 global using NotesApi.Models;
 global using NotesApi.Data;
 global using NotesApi.Services.NoteService;
-global using NotesApi.Services.UserService;
+global using NotesApi.Services.AdminService;
 global using NotesApi.Dtos.Note;
 global using NotesApi.Dtos.User;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -20,7 +20,7 @@ builder.Services.AddDbContext<DataContext>(opt =>
     opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddScoped<INoteService, NoteService>();
-builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

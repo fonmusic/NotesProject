@@ -4,28 +4,26 @@ namespace NotesApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class UserController : ControllerBase
+public class AdminController : ControllerBase
 {
-    private readonly IUserService _userService;
+    private readonly IAdminService _adminService;
 
-    public UserController(IUserService userService)
+    public AdminController(IAdminService adminService)
     {
-        _userService = userService;
+        _adminService = adminService;
     }
 
-    // GET: api/User
     [HttpGet]
     public async Task<ActionResult<ServiceResponse<IEnumerable<GetUserDto>>>> GetUsers()
     {
-        var serviceResponse = await _userService.GetUsers();
+        var serviceResponse = await _adminService.GetUsers();
         return Ok(serviceResponse);
     }
 
-    // GET: api/User/5
     [HttpGet("{id}")]
     public async Task<ActionResult<ServiceResponse<GetUserDto>>> GetUser(int id)
     {
-        var serviceResponse = await _userService.GetUserById(id);
+        var serviceResponse = await _adminService.GetUserById(id);
 
         if (!serviceResponse.Success)
         {
@@ -35,11 +33,10 @@ public class UserController : ControllerBase
         return Ok(serviceResponse);
     }
 
-    // PUT: api/User/5
     [HttpPut("{id}")]
     public async Task<IActionResult> PutUser(int id, UpdateUserDto userDto)
     {
-        var serviceResponse = await _userService.UpdateUser(id, userDto);
+        var serviceResponse = await _adminService.UpdateUser(id, userDto);
 
         if (!serviceResponse.Success)
         {
@@ -49,23 +46,10 @@ public class UserController : ControllerBase
         return NoContent();
     }
 
-    // POST: api/User
-    [HttpPost]
-    public async Task<ActionResult<ServiceResponse<GetUserDto>>> PostUser(AddUserDto userDto)
-    {
-        var serviceResponse = await _userService.CreateUser(userDto);
-        if (serviceResponse.Data == null)
-        {
-            return BadRequest(serviceResponse);
-        }
-        return CreatedAtAction(nameof(GetUser), new { id = serviceResponse.Data.ID }, serviceResponse);
-    }
-
-    // DELETE: api/User/5
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteUser(int id)
     {
-        var serviceResponse = await _userService.DeleteUserById(id);
+        var serviceResponse = await _adminService.DeleteUserById(id);
 
         if (!serviceResponse.Success)
         {
@@ -74,5 +58,4 @@ public class UserController : ControllerBase
 
         return NoContent();
     }
-
 }

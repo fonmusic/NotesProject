@@ -58,6 +58,56 @@ public class AuthRepository : IAuthRepository
         return response;
     }
 
+    public async Task<ServiceResponse<int>> AdminRegister(User user, string password)
+    {
+        var response = new ServiceResponse<int>();
+        if (await UserExists(user.Username))
+        {
+            response.Success = false;
+            response.Message = "User already exists.";
+            return response;
+        }
+
+        CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
+
+        user.PasswordHash = passwordHash;
+        user.PasswordSalt = passwordSalt;
+        user.IsAdmin = true; // Устанавливаем флаг администратора
+
+        _context.Users.Add(user);
+        await _context.SaveChangesAsync();
+        response.Data = user.Id;
+        return response;
+    }
+
+    public async Task<ServiceResponse<string>> AdminLogin(string username, string password)
+    {
+        var response = new ServiceResponse<string>();
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Username.ToLower().Equals(username.ToLower()));
+        if (user is null)
+        {
+            response.Success = false;
+            response.Message = "User not found.";
+        }
+        else if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+        {
+            response.Success = false;
+            response.Message = "Wrong password.";
+        }
+        else if (!user.IsAdmin) // Проверяем, что пользователь является администратором
+        {
+            response.Success = false;
+            response.Message = "User is not an admin.";
+        }
+        else
+        {
+            response.Data = CreateToken(user);
+        }
+
+        return response;
+    }
+
+
     public async Task<bool> UserExists(string username)
     {
         if (await _context.Users.AnyAsync(u => u.Username.ToLower() == username.ToLower()))
@@ -90,7 +140,8 @@ public class AuthRepository : IAuthRepository
         var claims = new List<Claim>
              {
                  new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                 new Claim(ClaimTypes.Name, user.Username)
+                 new Claim(ClaimTypes.Name, user.Username),
+                 new Claim(ClaimTypes.Role, user.IsAdmin ? "Admin" : "User")
              };
 
         var appSettingsToken = _configuration.GetSection("AppSettings:Token").Value;

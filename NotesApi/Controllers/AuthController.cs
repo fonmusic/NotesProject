@@ -36,4 +36,27 @@ public class AuthController : ControllerBase
         }
         return Ok(response);
     }
+
+    [HttpPost("Admin/Register")]
+    public async Task<ActionResult<ServiceResponse<int>>> AdminRegister(UserRegisterDto request)
+    {
+        var user = new User { Username = request.Username };
+        var response = await _authRepo.AdminRegister(user, request.Password);
+        if (!response.Success)
+        {
+            return BadRequest(response);
+        }
+        return Ok(response);
+    }
+
+    [HttpPost("Admin/Login")]
+    public async Task<ActionResult<ServiceResponse<string>>> AdminLogin(UserLoginDto request)
+    {
+        var response = await _authRepo.AdminLogin(request.Username, request.Password);
+        if (!response.Success)
+        {
+            return BadRequest(response);
+        }
+        return Ok(response);
+    }
 }

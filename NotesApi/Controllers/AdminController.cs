@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace NotesApi.Controllers;
 
-[Route("api/[controller]")]
+[Authorize]
 [ApiController]
+[Route("api/[controller]")]
 public class AdminController : ControllerBase
 {
     private readonly IAdminService _adminService;
@@ -14,6 +16,7 @@ public class AdminController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize(Roles = "admin")]
     public async Task<ActionResult<ServiceResponse<IEnumerable<GetUserDto>>>> GetUsers()
     {
         var serviceResponse = await _adminService.GetUsers();
@@ -21,6 +24,7 @@ public class AdminController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [Authorize(Roles = "admin")]
     public async Task<ActionResult<ServiceResponse<GetUserDto>>> GetUser(int id)
     {
         var serviceResponse = await _adminService.GetUserById(id);
@@ -34,6 +38,7 @@ public class AdminController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> PutUser(int id, UpdateUserDto userDto)
     {
         var serviceResponse = await _adminService.UpdateUser(id, userDto);
@@ -47,6 +52,7 @@ public class AdminController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> DeleteUser(int id)
     {
         var serviceResponse = await _adminService.DeleteUserById(id);

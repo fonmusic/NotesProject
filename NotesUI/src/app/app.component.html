@@ -1,10 +1,22 @@
 <div>
   Name:
-  <input [(ngModel)]="user.username" placeholder="Name">
+  <input [(ngModel)]="user.username" placeholder="UserName">
 </div>
 <div>
   Password:
   <input [(ngModel)]="user.password" placeholder="Password" type="password">
 </div>
-<button (click)="register(user)">User Register</button>
-<button (click)="login(user)">User Login</button>
+<button (click)="registerUser(user)">User Register</button>
+<button (click)="loginUser(user)">User Login</button>
+
+
+<div>
+  Name:
+  <input [(ngModel)]="admin.username" placeholder="AdminName">
+</div>
+<div>
+  Password:
+  <input [(ngModel)]="admin.password" placeholder="Password" type="password">
+</div>
+<button (click)="registerAdmin(admin)">Admin Register</button>
+<button (click)="loginAdmin(admin)">Admin Login</button>

@@ -1,22 +1,7 @@
-<div>
-  Name:
-  <input [(ngModel)]="user.username" placeholder="UserName">
-</div>
-<div>
-  Password:
-  <input [(ngModel)]="user.password" placeholder="Password" type="password">
-</div>
-<button (click)="registerUser(user)">User Register</button>
-<button (click)="loginUser(user)">User Login</button>
+<h1>My Notes App</h1>
 
+<button (click)="toggleAuth()">Toggle Auth</button>
 
-<div>
-  Name:
-  <input [(ngModel)]="admin.username" placeholder="AdminName">
-</div>
-<div>
-  Password:
-  <input [(ngModel)]="admin.password" placeholder="Password" type="password">
-</div>
-<button (click)="registerAdmin(admin)">Admin Register</button>
-<button (click)="loginAdmin(admin)">Admin Login</button>
+<ng-container *ngIf="showAuth">
+  <app-auth></app-auth>
+</ng-container>

@@ -1,6 +1,7 @@
 <p>auth works!</p>
 
-<div>
+<div *ngIf="!loggedIn">
+  <div>
     Name:
     <input [(ngModel)]="user.username" placeholder="UserName">
   </div>
@@ -10,7 +11,6 @@
   </div>
   <button (click)="registerUser(user)">User Register</button>
   <button (click)="loginUser(user)">User Login</button>
-  
   
   <div>
     Name:
@@ -22,3 +22,14 @@
   </div>
   <button (click)="registerAdmin(admin)">Admin Register</button>
   <button (click)="loginAdmin(admin)">Admin Login</button>
+</div>
+
+<div *ngIf="loggedIn">
+  <button (click)="logout()">Logout</button>
+  <div *ngIf="isAdmin">
+    <app-admin></app-admin>
+  </div>
+  <div *ngIf="!isAdmin">
+    <!-- Display user-specific content -->
+  </div>
+</div>

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { User } from '../models/user';
 import { Observable } from 'rxjs/internal/Observable';
 import { Admin } from '../models/admin';
+import { AuthResponse } from '../models/authResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -25,15 +26,11 @@ export class AuthService {
     );
   }
 
-  public loginUser(user: User): Observable<string> {
-    return this.http.post('http://localhost:5158/api/Auth/User/Login', user, {
-      responseType: 'text',
-    });
+  public loginUser(user: User): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>('http://localhost:5158/api/Auth/User/Login', user);
   }
 
-  public loginAdmin(user: Admin): Observable<string> {
-    return this.http.post('http://localhost:5158/api/Auth/Admin/Login', user, {
-      responseType: 'text',
-    });
+  public loginAdmin(user: Admin): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>('http://localhost:5158/api/Auth/Admin/Login', user);
   }
 }

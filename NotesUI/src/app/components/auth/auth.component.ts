@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Admin } from 'src/app/models/admin';
-import { AuthResponse } from 'src/app/models/authResponse';
+import { ServiceResponse } from 'src/app/models/serviceResponse';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -28,7 +28,7 @@ export class AuthComponent {
   }
 
   loginUser(user: User) {
-    this.authService.loginUser(user).subscribe((response: AuthResponse) => {
+    this.authService.loginUser(user).subscribe((response: ServiceResponse<string>) => {
       localStorage.setItem('authToken', response.data);
       this.loggedIn = true;
       this.isAdmin = false;
@@ -37,7 +37,7 @@ export class AuthComponent {
   }
 
   loginAdmin(admin: Admin) {
-    this.authService.loginAdmin(admin).subscribe((response: AuthResponse ) => {
+    this.authService.loginAdmin(admin).subscribe((response: ServiceResponse<string> ) => {
       localStorage.setItem('authToken', response.data);
       this.loggedIn = true;
       this.isAdmin = true;

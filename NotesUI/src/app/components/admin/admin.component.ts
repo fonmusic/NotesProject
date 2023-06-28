@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ServiceResponse } from 'src/app/models/serviceResponse';
 import { User } from 'src/app/models/user';
 import { AdminService } from 'src/app/services/admin.service';
 
@@ -13,10 +14,11 @@ export class AdminComponent implements OnInit {
   constructor(private adminService: AdminService) { }
 
   ngOnInit(): void {
-    // this.getUsers();
+    //this.getUsers();
   }
 
   getUsers(): void {
-    this.adminService.getUsers().subscribe(users => { this.users = users });
+    this.adminService.getUsers().subscribe(
+      (response: ServiceResponse<User[]>) => {this.users = response.data});
   }
 }

@@ -32,8 +32,8 @@
       <tr *ngFor="let note of notes; let i = index">
         <td>{{ note.id }}</td>
         <td>{{ note.title }}</td>
-        <td>{{ note.createdDate | date }}</td>
-        <td>{{ note.updatedDate | date }}</td>
+        <td>{{ note.createdDate | date :'yyyy-MM-dd HH:mm z' }}</td>
+        <td>{{ note.updatedDate | date :'yyyy-MM-dd HH:mm z' }}</td>
         <td>
           <!-- Отображение кнопок Open и Edit -->
           <button (click)="toggleNoteText(i)">Open</button>

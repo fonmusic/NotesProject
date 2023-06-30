@@ -42,8 +42,8 @@ export class UserComponent implements OnInit {
   updateNote(note: Note): void {
     const updatedNote: Note = {
       ...note,
-      title: this.newNote.title,
-      text: this.newNote.text,
+      title: note.title,
+      text: note.text,
       updatedDate: new Date()
     };
     this.noteService.updateNote(note.id!, updatedNote).subscribe(

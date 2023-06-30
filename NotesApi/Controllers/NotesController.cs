@@ -52,7 +52,7 @@ public class NotesController : ControllerBase
         return Ok(serviceResponse);
     }
 
-    [HttpPut("EditNote{id}")]
+    [HttpPut("EditNote/{id}")]
     [Authorize(Roles = "User")]
     public async Task<IActionResult> PutNote(int id, UpdateNoteDto updatetNote)
     {

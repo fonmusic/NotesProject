@@ -1,0 +1,11 @@
+.app-container {
+    background-color: #f0f0f0;
+    /* Серый цвет фона */
+    background-image: linear-gradient(to bottom, #4cb8c4, #3cd3ad);
+    /* Градиент в голубой */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

@@ -2,32 +2,31 @@
   <h2>My Notes</h2>
 
   <!-- Отображение кнопки Create Note -->
-  <button (click)="toggleCreateNoteForm()">Create Note</button>
+  <button class="btn btn-primary mt-3" (click)="toggleCreateNoteForm()">Create Note</button>
 
   <!-- Форма создания заметки -->
   <div *ngIf="showCreateNoteForm">
     <div>
       <label for="newNoteTitle">Title:</label>
-      <input id="newNoteTitle" [(ngModel)]="newNote.title" placeholder="Enter title">
+      <input id="newNoteTitle" [(ngModel)]="newNote.title" placeholder="Enter title" class="form-control">
     </div>
     <div>
       <label for="newNoteText">Text:</label>
-      <textarea id="newNoteText" [(ngModel)]="newNote.text" placeholder="Enter text"></textarea>
+      <textarea id="newNoteText" [(ngModel)]="newNote.text" placeholder="Enter text" class="form-control"></textarea>
     </div>
-    <button (click)="addNote()">Add Note</button>
+    <button class="btn btn-primary mt-3" (click)="addNote()">Add Note</button>
   </div>
 
   <!-- Поиск заметок по заголовку -->
   <div>
     <label for="searchByTitle">Search by Title:</label>
-    <input id="searchByTitle" [(ngModel)]="newNoteTitle" placeholder="Enter title">
-    <button (click)="getNoteByTitle(newNoteTitle)">Search</button>
-    <button (click)="resetSearch()">Reset</button>
-
+    <input id="searchByTitle" [(ngModel)]="newNoteTitle" placeholder="Enter title" class="form-control">
+    <button class="btn btn-primary mt-3" (click)="getNoteByTitle(newNoteTitle)">Search</button>
+    <button class="btn btn-secondary mt-3" (click)="resetSearch()">Reset</button>
   </div>
 
   <!-- Таблица с заметками пользователя -->
-  <table>
+  <table class="table">
     <thead>
       <tr>
         <th>ID</th>
@@ -45,8 +44,8 @@
         <td>{{ note.updatedDate | date :'yyyy-MM-dd HH:mm z' }}</td>
         <td>
           <!-- Отображение кнопок Open и Edit -->
-          <button (click)="toggleNoteText(i)">Open</button>
-          <button (click)="toggleEditNoteForm(i)">Edit</button>
+          <button class="btn btn-primary me-3" (click)="toggleNoteText(i)">Open</button>
+          <button class="btn btn-primary" (click)="toggleEditNoteForm(i)">Edit</button>
         </td>
       </tr>
     </tbody>
@@ -60,15 +59,16 @@
     <div *ngIf="editNoteIndex === i">
       <div>
         <label for="updateNoteTitle">New Title:</label>
-        <input id="updateNoteTitle" [(ngModel)]="note.title" placeholder="Enter new title">
+        <input id="updateNoteTitle" [(ngModel)]="note.title" placeholder="Enter new title" class="form-control">
       </div>
       <div>
         <label for="updateNoteText">New Text:</label>
-        <textarea id="updateNoteText" [(ngModel)]="note.text" placeholder="Enter new text"></textarea>
+        <textarea id="updateNoteText" [(ngModel)]="note.text" placeholder="Enter new text"
+          class="form-control"></textarea>
       </div>
-      <button (click)="updateNote(note)">Update</button>
-      <button (click)="deleteNoteById(note.id)">Delete</button>
-      <button (click)="closeEditNoteForm()">Cancel</button>
+      <button class="btn btn-primary mt-3" (click)="updateNote(note)">Update</button>
+      <button class="btn btn-danger mt-3" (click)="deleteNoteById(note.id)">Delete</button>
+      <button class="btn btn-secondary mt-3" (click)="closeEditNoteForm()">Cancel</button>
     </div>
   </div>
 </div>

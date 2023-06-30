@@ -1,7 +1,12 @@
-<h1>My Notes App</h1>
+<div class="app-container">
+  <div class="container d-flex flex-column min-vh-100 justify-content-center align-items-center">
+    <h1>Notes</h1>
 
-<button (click)="toggleAuth()">Toggle Auth</button>
+    <button class="btn btn-lg btn-dark mt-3" (click)="toggleAuth()">Toggle Auth</button>
 
-<ng-container *ngIf="showAuth">
-  <app-auth></app-auth>
-</ng-container>
+    <ng-container *ngIf="showAuth">
+      <app-auth></app-auth>
+    </ng-container>
+    <!-- Ваш остальной код здесь -->
+  </div>
+</div>

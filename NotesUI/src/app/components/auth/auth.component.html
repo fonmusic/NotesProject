@@ -30,6 +30,7 @@
     <app-admin></app-admin>
   </div>
   <div *ngIf="!isAdmin">
-    <!-- Display user-specific content -->
+    <app-user #userComponent></app-user>
   </div>
 </div>
+

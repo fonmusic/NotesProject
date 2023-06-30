@@ -1,0 +1,65 @@
+<div>
+  <h2>My Notes</h2>
+
+  <!-- Отображение кнопки Create Note -->
+  <button (click)="toggleCreateNoteForm()">Create Note</button>
+  
+  <!-- Форма создания заметки -->
+  <div *ngIf="showCreateNoteForm">
+    <div>
+      <label for="newNoteTitle">Title:</label>
+      <input id="newNoteTitle" [(ngModel)]="newNote.title" placeholder="Enter title">
+    </div>
+    <div>
+      <label for="newNoteText">Text:</label>
+      <textarea id="newNoteText" [(ngModel)]="newNote.text" placeholder="Enter text"></textarea>
+    </div>
+    <button (click)="addNote()">Add Note</button>
+  </div>
+
+  <!-- Таблица с заметками пользователя -->
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Created Date</th>
+        <th>Updated Date</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let note of notes; let i = index">
+        <td>{{ note.id }}</td>
+        <td>{{ note.title }}</td>
+        <td>{{ note.createdDate | date }}</td>
+        <td>{{ note.updatedDate | date }}</td>
+        <td>
+          <!-- Отображение кнопок Open и Edit -->
+          <button (click)="toggleNoteText(i)">Open</button>
+          <button (click)="toggleEditNoteForm(i)">Edit</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Отображение текста заметки и формы редактирования -->
+  <div *ngFor="let note of notes; let i = index">
+    <div *ngIf="showNoteText[i]">
+      <p>{{ note.text }}</p>
+    </div>
+    <div *ngIf="editNoteIndex === i">
+      <div>
+        <label for="updateNoteTitle">New Title:</label>
+        <input id="updateNoteTitle" [(ngModel)]="note.title" placeholder="Enter new title">
+      </div>
+      <div>
+        <label for="updateNoteText">New Text:</label>
+        <textarea id="updateNoteText" [(ngModel)]="note.text" placeholder="Enter new text"></textarea>
+      </div>
+      <button (click)="updateNote(note)">Update</button>
+      <button (click)="deleteNoteById(note.id)">Delete</button>
+      <button (click)="closeEditNoteForm()">Cancel</button>
+    </div>
+  </div>
+</div>

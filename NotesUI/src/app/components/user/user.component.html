@@ -3,7 +3,7 @@
 
   <!-- Отображение кнопки Create Note -->
   <button (click)="toggleCreateNoteForm()">Create Note</button>
-  
+
   <!-- Форма создания заметки -->
   <div *ngIf="showCreateNoteForm">
     <div>
@@ -15,6 +15,15 @@
       <textarea id="newNoteText" [(ngModel)]="newNote.text" placeholder="Enter text"></textarea>
     </div>
     <button (click)="addNote()">Add Note</button>
+  </div>
+
+  <!-- Поиск заметок по заголовку -->
+  <div>
+    <label for="searchByTitle">Search by Title:</label>
+    <input id="searchByTitle" [(ngModel)]="newNoteTitle" placeholder="Enter title">
+    <button (click)="getNoteByTitle(newNoteTitle)">Search</button>
+    <button (click)="resetSearch()">Reset</button>
+
   </div>
 
   <!-- Таблица с заметками пользователя -->

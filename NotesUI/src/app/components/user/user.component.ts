@@ -18,6 +18,7 @@ export class UserComponent implements OnInit {
   showCreateNoteForm: boolean = false;
   showNoteText: boolean[] = [];
   editNoteIndex: number = -1;
+  searchTitle: string = '';
 
   constructor(private noteService: NoteService) { }
 
@@ -27,6 +28,11 @@ export class UserComponent implements OnInit {
 
   getNotes(): void {
     this.noteService.getAllNotes().subscribe(
+      (response: ServiceResponse<Note[]>) => { this.notes = response.data })
+  }
+
+  getNoteByTitle(title: string): void {
+    this.noteService.getNoteByTitle(title).subscribe(
       (response: ServiceResponse<Note[]>) => { this.notes = response.data })
   }
 
@@ -65,22 +71,27 @@ export class UserComponent implements OnInit {
       );
     }
   }
-  
+
 
   toggleCreateNoteForm(): void {
     this.showCreateNoteForm = !this.showCreateNoteForm;
   }
-  
+
   toggleNoteText(index: number): void {
     this.showNoteText[index] = !this.showNoteText[index];
   }
-  
+
   toggleEditNoteForm(index: number): void {
     this.editNoteIndex = index;
   }
-  
+
   closeEditNoteForm(): void {
     this.editNoteIndex = -1;
+  }
+
+  resetSearch(): void {
+    this.searchTitle = ''; 
+    this.getNotes(); 
   }
 
 }

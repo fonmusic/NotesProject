@@ -1,4 +1,4 @@
-<p class="mt-3">authentication</p>
+<!-- <p class="mt-3">authentication</p> -->
 
 <div *ngIf="!loggedIn">
   <div>
@@ -9,8 +9,8 @@
     <label for="password">Password:</label>
     <input id="password" [(ngModel)]="user.password" placeholder="Password" type="password" class="form-control">
   </div>
-  <button class="btn btn-primary mt-3" (click)="registerUser(user)">User Register</button>
-  <button class="btn btn-primary mt-3 ms-2" (click)="loginUser(user)">User Login</button>  
+  <button class="btn btn-secondary mt-3" (click)="registerUser(user)">User Register</button>
+  <button class="btn btn-secondary mt-3 ms-2" (click)="loginUser(user)">User Login</button>  
 
   <div>
     <label for="adminUsername">Name:</label>
@@ -20,12 +20,12 @@
     <label for="adminPassword">Password:</label>
     <input id="adminPassword" [(ngModel)]="admin.password" placeholder="Password" type="password" class="form-control">
   </div>
-  <button class="btn btn-primary mt-3" (click)="registerAdmin(admin)">Admin Register</button>
-  <button class="btn btn-primary mt-3 ms-2" (click)="loginAdmin(admin)">Admin Login</button>
+  <button class="btn btn-secondary mt-3" (click)="registerAdmin(admin)">Admin Register</button>
+  <button class="btn btn-secondary mt-3 ms-2" (click)="loginAdmin(admin)">Admin Login</button>
 </div>
 
 <div *ngIf="loggedIn">
-  <button class="btn btn-primary mt-3" (click)="logout()">Logout</button>
+  <button class="btn btn-secondary mt-3" (click)="logout()">Logout</button>
   <div *ngIf="isAdmin">
     <app-admin></app-admin>
   </div>

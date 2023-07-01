@@ -51,7 +51,7 @@ public class AdminController : ControllerBase
         return NoContent();
     }
 
-    [HttpDelete("DeleteUserById{id}")]
+    [HttpDelete("DeleteUserById/{id}")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteUser(int id)
     {

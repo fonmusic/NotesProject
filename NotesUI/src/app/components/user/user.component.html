@@ -22,11 +22,11 @@
     <label for="searchByTitle">Search by Title:</label>
     <input id="searchByTitle" [(ngModel)]="newNoteTitle" placeholder="Enter title" class="form-control">
     <button class="btn btn-secondary mt-3" (click)="getNoteByTitle(newNoteTitle)">Search</button>
-    <button class="btn btn-secondary mt-3" (click)="resetSearch()">Reset</button>
+    <button class="btn btn-secondary mt-3 ms-2" (click)="resetSearch()">Reset</button>
   </div>
 
   <!-- Таблица с заметками пользователя -->
-  <table class="table">
+  <table class="table mt-3">
     <thead>
       <tr>
         <th>ID</th>

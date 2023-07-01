@@ -21,4 +21,10 @@ export class AdminComponent implements OnInit {
     this.adminService.getUsers().subscribe(
       (response: ServiceResponse<User[]>) => {this.users = response.data});
   }
+
+  deleteUserById(id: number): void {
+    this.adminService.deleteUserById(id).subscribe(() => {
+      this.getUsers();
+    });
+  }
 }

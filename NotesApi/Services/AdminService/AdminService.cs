@@ -14,9 +14,11 @@ public class AdminService : IAdminService
     public async Task<ServiceResponse<IEnumerable<GetUserDto>>> GetUsers()
     {
         var serviceResponse = new ServiceResponse<IEnumerable<GetUserDto>>();
-        var users = await _context.Users.ToListAsync();        
-        serviceResponse.Data = _mapper.Map<IEnumerable<GetUserDto>>(users);
+        var users = await _context.Users
+            .Where(u => !u.IsDeleted)
+            .ToListAsync();        
 
+        serviceResponse.Data = _mapper.Map<IEnumerable<GetUserDto>>(users);
         serviceResponse.Message = "That's all users.";
         
         return serviceResponse;
@@ -76,12 +78,13 @@ public class AdminService : IAdminService
             return serviceResponse;
         }
 
-        _context.Users.Remove(user);
+        // _context.Users.Remove(user);
+        user.IsDeleted = true;
         await _context.SaveChangesAsync();
 
         serviceResponse.Data = true;
 
-        serviceResponse.Message = "The user deleted.";
+        serviceResponse.Message = "The user has been deleted.";
 
         return serviceResponse;
     }

@@ -8,4 +8,5 @@ public class User
     public byte[] PasswordSalt { get; set; } = new byte[0];
     public List<Note>? Notes { get; set; }
     public bool IsAdmin { get; set; }
+    public bool IsDeleted { get; set; }
 }

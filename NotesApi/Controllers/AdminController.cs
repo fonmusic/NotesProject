@@ -62,6 +62,6 @@ public class AdminController : ControllerBase
             return NotFound(serviceResponse);
         }
 
-        return NoContent();
+        return Ok(serviceResponse);
     }
 }

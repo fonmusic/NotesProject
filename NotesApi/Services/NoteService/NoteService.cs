@@ -49,7 +49,7 @@ public class NoteService : INoteService
         return serviceResponse;
     }
 
-    public async Task<ServiceResponse<IEnumerable<GetNoteDto>>> GetNoteByTitle(string title)
+    public async Task<ServiceResponse<IEnumerable<GetNoteDto>>> GetNoteByWords(string words)
     {
         var serviceResponse = new ServiceResponse<IEnumerable<GetNoteDto>>();
 
@@ -57,22 +57,34 @@ public class NoteService : INoteService
             .Where(n => n.User!.Id == GetUserId())
             .ToListAsync();
 
+        char[] separators = {
+            ' ', ',', ';', '-', '\t', '\n', '\r', '.', '!', '?', ':', '\"',
+             '\'', '(', ')', '[', ']', '{', '}', '<', '>', '/', '\\' };
+
+        var searchWords = words.Split(separators, StringSplitOptions.RemoveEmptyEntries)
+                           .Select(w => w.Trim())
+                           .ToArray();
+
         var filteredNotes = notes.Where(n =>
-            n.Title.IndexOf(title, StringComparison.OrdinalIgnoreCase) >= 0 ||
-            title.Split(' ').Any(word => n.Title.IndexOf(word, StringComparison.OrdinalIgnoreCase) >= 0)
+            searchWords.Any(word =>
+                n.Title.Split(separators, StringSplitOptions.RemoveEmptyEntries)
+                       .Any(t => t.Equals(word, StringComparison.OrdinalIgnoreCase))
+                || n.Text.Split(separators, StringSplitOptions.RemoveEmptyEntries)
+                       .Any(t => t.Equals(word, StringComparison.OrdinalIgnoreCase))
+            )
         ).ToList();
 
         if (filteredNotes.Count == 0)
         {
             serviceResponse.Success = false;
-            serviceResponse.Message = $"Notes with Title \"{title}\" not found.";
+            serviceResponse.Message = $"Notes containing \"{words}\" not found.";
             return serviceResponse;
         }
 
         var mappedNotes = filteredNotes.Select(n => _mapper.Map<GetNoteDto>(n));
-        
+
         serviceResponse.Data = mappedNotes;
-        serviceResponse.Message = $"""Here's a notes with Title "{title}".""";
+        serviceResponse.Message = $"""Here's a notes containing "{words}".""";
 
         return serviceResponse;
     }

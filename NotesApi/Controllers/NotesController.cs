@@ -38,11 +38,11 @@ public class NotesController : ControllerBase
         return Ok(serviceResponse);
     }
 
-    [HttpGet("GetNoteByTitle/{title}")]
+    [HttpGet("GetNoteByWords/{words}")]
     [Authorize(Roles = "User")]
-    public async Task<ActionResult<ServiceResponse<IEnumerable<GetNoteDto>>>> GetNoteByTitle([FromRoute] string title)
+    public async Task<ActionResult<ServiceResponse<IEnumerable<GetNoteDto>>>> GetNoteByWords([FromRoute] string words)
     {
-        var serviceResponse = await _noteService.GetNoteByTitle(title);
+        var serviceResponse = await _noteService.GetNoteByWords(words);
 
         if (!serviceResponse.Success)
         {

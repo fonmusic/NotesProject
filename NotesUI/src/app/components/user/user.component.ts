@@ -19,6 +19,7 @@ export class UserComponent implements OnInit {
   showNoteText: boolean[] = [];
   editNoteIndex: number = -1;
   searchTitle: string = '';
+  notesNotFound: boolean = false;
 
   constructor(private noteService: NoteService) { }
 
@@ -28,12 +29,26 @@ export class UserComponent implements OnInit {
 
   getNotes(): void {
     this.noteService.getAllNotes().subscribe(
-      (response: ServiceResponse<Note[]>) => { this.notes = response.data })
+      (response: ServiceResponse<Note[]>) => {
+        this.notes = response.data;
+        this.notesNotFound = false; // Сброс флага при получении заметок
+      },
+      (error: any) => {
+        this.notesNotFound = true; // Установка флага в случае ошибки
+      }
+    );
   }
 
   getNoteByTitle(title: string): void {
     this.noteService.getNoteByTitle(title).subscribe(
-      (response: ServiceResponse<Note[]>) => { this.notes = response.data })
+      (response: ServiceResponse<Note[]>) => {
+        this.notes = response.data;
+        this.notesNotFound = false; // Сброс флага при получении заметок
+      },
+      (error: any) => {
+        this.notesNotFound = true; // Установка флага в случае ошибки
+      }
+    );
   }
 
   addNote(): void {
@@ -90,8 +105,8 @@ export class UserComponent implements OnInit {
   }
 
   resetSearch(): void {
-    this.searchTitle = ''; 
-    this.getNotes(); 
+    this.searchTitle = '';
+    this.getNotes();
   }
 
 }

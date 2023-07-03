@@ -48,6 +48,13 @@ public class AuthRepository : IAuthRepository
             return response;
         }
 
+        if (string.IsNullOrWhiteSpace(password))
+        {
+            response.Success = false;
+            response.Message = "Password cannot be empty.";
+            return response;
+        }
+
         CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
 
         user.PasswordHash = passwordHash;
@@ -55,10 +62,10 @@ public class AuthRepository : IAuthRepository
 
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
-        
+
         response.Data = user.Id;
         response.Message = "You are registered.";
-        
+
         return response;
     }
 
@@ -100,6 +107,13 @@ public class AuthRepository : IAuthRepository
             return response;
         }
 
+        if (string.IsNullOrWhiteSpace(password)) // Проверка на пустой пароль
+        {
+            response.Success = false;
+            response.Message = "Password cannot be empty.";
+            return response;
+        }
+
         CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
 
         user.PasswordHash = passwordHash;
@@ -108,10 +122,10 @@ public class AuthRepository : IAuthRepository
 
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
-        
+
         response.Data = user.Id;
         response.Message = "You are registered.";
-        
+
         return response;
     }
 

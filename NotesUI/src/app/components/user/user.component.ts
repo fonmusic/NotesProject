@@ -3,6 +3,7 @@ import { Note } from 'src/app/models/note';
 import { ServiceResponse } from 'src/app/models/serviceResponse';
 import { NoteService } from 'src/app/services/note.service';
 
+
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
@@ -16,6 +17,10 @@ export class UserComponent implements OnInit {
   showNoteText: boolean[] = [];
   editNoteIndex: number = -1;
   notesNotFound: boolean = false;
+  buttonNoteEditorLabel: string = 'Crate a new note';
+
+  successMessage: string = '';
+  errorMessage: string = '';
 
   constructor(private noteService: NoteService) { }
 
@@ -27,10 +32,10 @@ export class UserComponent implements OnInit {
     this.noteService.getAllNotes().subscribe(
       (response: ServiceResponse<Note[]>) => {
         this.notes = response.data;
-        this.notesNotFound = false; 
+        this.notesNotFound = false;
       },
       (error: any) => {
-        this.notesNotFound = true; 
+        this.notesNotFound = true;
       }
     );
   }
@@ -39,10 +44,10 @@ export class UserComponent implements OnInit {
     this.noteService.getNoteByTitle(title).subscribe(
       (response: ServiceResponse<Note[]>) => {
         this.notes = response.data;
-        this.notesNotFound = false; 
+        this.notesNotFound = false;
       },
       (error: any) => {
-        this.notesNotFound = true; 
+        this.notesNotFound = true;
       }
     );
   }
@@ -52,8 +57,14 @@ export class UserComponent implements OnInit {
       (response: ServiceResponse<Note>) => {
         this.notes.push(response.data);
         this.newNote = { title: '', text: '', createdDate: new Date(), updatedDate: new Date() };
+        this.successMessage = 'Note added successfully.';
+        this.clearMessagesAfterDelay();
+      },
+      (error: any) => {
+        this.errorMessage = 'Failed to add note.';
+        this.clearMessagesAfterDelay();
       }
-    )
+    );
   }
 
   updateNote(note: Note): void {
@@ -67,7 +78,13 @@ export class UserComponent implements OnInit {
         if (index !== -1) {
           this.notes[index] = response.data;
           this.newNote = { title: '', text: '', createdDate: new Date(), updatedDate: new Date() };
+          this.successMessage = 'Note updated successfully.';
+          this.clearMessagesAfterDelay();
         }
+      },
+      (error: any) => {
+        this.errorMessage = 'Failed to update note.';
+        this.clearMessagesAfterDelay();
       });
   }
 
@@ -76,18 +93,28 @@ export class UserComponent implements OnInit {
       this.noteService.deleteNoteById(id).subscribe(
         (response: ServiceResponse<boolean>) => {
           this.notes = this.notes.filter(n => n.id !== id);
+          this.successMessage = 'Note deleted successfully.';
+          this.clearMessagesAfterDelay();
+        },
+        (error: any) => {
+          this.errorMessage = 'Failed to delete note.';
+          this.clearMessagesAfterDelay();
         }
       );
     }
   }
 
-
   toggleCreateNoteForm(): void {
     this.showCreateNoteForm = !this.showCreateNoteForm;
+    this.buttonNoteEditorLabel = this.showCreateNoteForm ? 'Close note editor' : 'Crate a new note';
   }
 
   toggleNoteText(index: number): void {
     this.showNoteText[index] = !this.showNoteText[index];
+  }
+
+  closeNoteText(index: number): void {
+    this.showNoteText[index] = false;
   }
 
   toggleEditNoteForm(index: number): void {
@@ -100,6 +127,13 @@ export class UserComponent implements OnInit {
 
   resetSearch(): void {
     this.getNotes();
+  }
+
+  clearMessagesAfterDelay(): void {
+    setTimeout(() => {
+      this.successMessage = '';
+      this.errorMessage = '';
+    }, 3000);
   }
 
 }

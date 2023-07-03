@@ -11,9 +11,11 @@ export class AppComponent {
   constructor() { }
 
   showAuth: boolean = false;
+  buttonLabel: string = 'Open';
 
-  toggleAuth(): void {
+  toggleOpenClose(): void {
     this.showAuth = !this.showAuth;
+    this.buttonLabel = this.showAuth ? 'Close' : 'Open';
   }
   
 }

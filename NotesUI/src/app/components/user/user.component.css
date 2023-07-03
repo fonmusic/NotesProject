@@ -1,3 +1,33 @@
 .mh-500px {
     max-height: 200px;
 }
+
+.note-text-container {
+    border: 1px solid #ccc;
+    background-color: #f5f5f5;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.note-text {
+    font-size: 16px;
+    line-height: 1.5;
+    font-style: italic;
+}
+
+.table {
+    border-radius: 5px;
+}
+
+.note-title {
+    font-weight: bold;
+}
+
+.user-component {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(to bottom, #f5f5f5, #fff);
+}

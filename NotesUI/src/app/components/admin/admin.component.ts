@@ -10,6 +10,7 @@ import { AdminService } from 'src/app/services/admin.service';
 })
 export class AdminComponent implements OnInit {
   users: User[] = [];
+  deleteMessage: string = '';
 
   constructor(private adminService: AdminService) { }
 
@@ -25,6 +26,11 @@ export class AdminComponent implements OnInit {
   deleteUserById(id: number): void {
     this.adminService.deleteUserById(id).subscribe(() => {
       this.getUsers();
+      this.deleteMessage = 'The user has been successfully deleted.';
     });
+  }
+
+  hideDeleteMessage(): void {
+    this.deleteMessage = '';
   }
 }

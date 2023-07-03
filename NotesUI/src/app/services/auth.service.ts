@@ -13,15 +13,15 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  public registerUser(user: User): Observable<any> {
-    return this.http.post<any>(
+  public registerUser(user: User): Observable<ServiceResponse<number>> {
+    return this.http.post<ServiceResponse<number>>(
       `${environment.apiUrl}/Auth/User/Register`,
       user
     );
   }
 
-  public registerAdmin(user: Admin): Observable<any> {
-    return this.http.post<any>(
+  public registerAdmin(user: Admin): Observable<ServiceResponse<number>> {
+    return this.http.post<ServiceResponse<number>>(
       `${environment.apiUrl}/Auth/Admin/Register`,
       user
     );

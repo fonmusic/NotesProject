@@ -57,22 +57,23 @@ public class NoteService : INoteService
             .Where(n => n.User!.Id == GetUserId())
             .ToListAsync();
 
-        char[] separators = {
-            ' ', ',', ';', '-', '\t', '\n', '\r', '.', '!', '?', ':', '\"',
-             '\'', '(', ')', '[', ']', '{', '}', '<', '>', '/', '\\' };
+        var searchWords = SplitWords(words);
 
-        var searchWords = words.Split(separators, StringSplitOptions.RemoveEmptyEntries)
-                           .Select(w => w.Trim())
-                           .ToArray();
-
-        var filteredNotes = notes.Where(n =>
-            searchWords.Any(word =>
-                n.Title.Split(separators, StringSplitOptions.RemoveEmptyEntries)
-                       .Any(t => t.Equals(word, StringComparison.OrdinalIgnoreCase))
-                || n.Text.Split(separators, StringSplitOptions.RemoveEmptyEntries)
-                       .Any(t => t.Equals(word, StringComparison.OrdinalIgnoreCase))
-            )
+        var noteWords = notes.Select(n =>
+            new
+            {
+                Note = n,
+                TitleWords = SplitWords(n.Title),
+                TextWords = SplitWords(n.Text)
+            }
         ).ToList();
+
+        var filteredNotes = noteWords.Where(nw =>
+            searchWords.Any(word =>
+                nw.TitleWords.Any(t => t.Equals(word, StringComparison.OrdinalIgnoreCase))
+                || nw.TextWords.Any(t => t.Equals(word, StringComparison.OrdinalIgnoreCase))
+            )
+        ).Select(nw => nw.Note).ToList();
 
         if (filteredNotes.Count == 0)
         {
@@ -157,5 +158,16 @@ public class NoteService : INoteService
         serviceResponse.Message = "The note deleted.";
 
         return serviceResponse;
+    }
+
+    private static string[] SplitWords(string input)
+    {
+        char[] separators = {
+        ' ', ',', ';', '-', '\t', '\n', '\r', '.', '!', '?', ':', '\"',
+         '\'', '(', ')', '[', ']', '{', '}', '<', '>', '/', '\\' };
+
+        return input.Split(separators, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(w => w.Trim())
+                    .ToArray();
     }
 }

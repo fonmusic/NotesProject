@@ -11,8 +11,8 @@
       <label for="password">Password:</label>
       <input id="password" [(ngModel)]="user.password" placeholder="Password" type="password" class="form-control">
     </div>
-    <button class="btn btn-secondary mt-3" (click)="registerUser(user)">User Register</button>
-    <button class="btn btn-secondary mt-3 ms-2" (click)="loginUser(user)">User Login</button>
+    <button class="btn btn-secondary mt-3" (click)="registerUser(user)">Sign up</button>
+    <button class="btn btn-secondary mt-3 ms-2" (click)="loginUser(user)">Sign in</button>
   </div>
 
   <div *ngIf="isAdminMode">
@@ -25,8 +25,8 @@
       <input id="adminPassword" [(ngModel)]="admin.password" placeholder="Password" type="password"
         class="form-control">
     </div>
-    <button class="btn btn-secondary mt-3" (click)="registerAdmin(admin)">Admin Register</button>
-    <button class="btn btn-secondary mt-3 ms-2" (click)="loginAdmin(admin)">Admin Login</button>
+    <button class="btn btn-secondary mt-3" (click)="registerAdmin(admin)">Sign up</button>
+    <button class="btn btn-secondary mt-3 ms-2" (click)="loginAdmin(admin)">Sign in</button>
   </div>
 </div>
 

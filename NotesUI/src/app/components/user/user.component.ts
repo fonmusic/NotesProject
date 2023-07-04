@@ -129,6 +129,11 @@ export class UserComponent implements OnInit {
     this.getNotes();
   }
 
+  clearSearch(): void {
+    this.newNote.title = '';
+    this.resetSearch();
+  }
+
   clearMessagesAfterDelay(): void {
     setTimeout(() => {
       this.successMessage = '';

@@ -12,6 +12,7 @@ import { NoteService } from 'src/app/services/note.service';
 export class UserComponent implements OnInit {
   notes: Note[] = [];
   newNote: Note = { title: '', text: '', createdDate: new Date(), updatedDate: new Date() };
+  newNoteTitle = '';
 
   showCreateNoteForm: boolean = false;
   showNoteText: boolean[] = [];
@@ -53,19 +54,32 @@ export class UserComponent implements OnInit {
   }
 
   addNote(): void {
-    this.noteService.addNote(this.newNote).subscribe(
+    if (this.newNoteTitle.trim() === '') {
+      this.errorMessage = 'Adding an empty note is prohibited.';
+      this.clearMessagesAfterDelay();
+      return;
+    }
+    this.noteService.addNote({
+      title: this.newNoteTitle,
+      text: this.newNote.text,
+      createdDate: new Date(),
+      updatedDate: new Date()
+    }).subscribe(
       (response: ServiceResponse<Note>) => {
         this.notes.push(response.data);
-        this.newNote = { title: '', text: '', createdDate: new Date(), updatedDate: new Date() };
+        this.newNoteTitle = '';
+        this.newNote.text = '';
         this.successMessage = 'Note added successfully.';
         this.clearMessagesAfterDelay();
       },
       (error: any) => {
         this.errorMessage = 'Failed to add note.';
         this.clearMessagesAfterDelay();
+        this.toggleCreateNoteForm();
       }
     );
   }
+
 
   updateNote(note: Note): void {
     const updatedNote: Note = {
@@ -80,6 +94,7 @@ export class UserComponent implements OnInit {
           this.newNote = { title: '', text: '', createdDate: new Date(), updatedDate: new Date() };
           this.successMessage = 'Note updated successfully.';
           this.clearMessagesAfterDelay();
+          this.closeEditNoteForm(); 
         }
       },
       (error: any) => {
@@ -99,17 +114,27 @@ export class UserComponent implements OnInit {
         (error: any) => {
           this.errorMessage = 'Failed to delete note.';
           this.clearMessagesAfterDelay();
+          this.closeEditNoteForm();
         }
       );
     }
   }
 
   toggleCreateNoteForm(): void {
-    this.showCreateNoteForm = !this.showCreateNoteForm;
+    if (this.showCreateNoteForm) {
+      this.showCreateNoteForm = false;
+    } else {
+      for (let i = 0; i < this.showNoteText.length; i++) {
+        this.closeNoteText(i);
+      }
+      this.showCreateNoteForm = true;
+    }
     this.buttonNoteEditorLabel = this.showCreateNoteForm ? 'Close note editor' : 'Crate a new note';
   }
 
   toggleNoteText(index: number): void {
+    this.showCreateNoteForm = false;
+    this.closeEditNoteForm();
     this.showNoteText[index] = !this.showNoteText[index];
   }
 

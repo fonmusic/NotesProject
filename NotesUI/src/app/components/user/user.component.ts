@@ -41,16 +41,18 @@ export class UserComponent implements OnInit {
     );
   }
 
-  getNoteByTitle(title: string): void {
-    this.noteService.getNoteByTitle(title).subscribe(
-      (response: ServiceResponse<Note[]>) => {
-        this.notes = response.data;
-        this.notesNotFound = false;
-      },
-      (error: any) => {
-        this.notesNotFound = true;
-      }
-    );
+  getNoteByWords(words: string): void {
+    if (words !== '') {
+      this.noteService.getNoteByWords(words).subscribe(
+        (response: ServiceResponse<Note[]>) => {
+          this.notes = response.data;
+          this.notesNotFound = false;
+        },
+        (error: any) => {
+          this.notesNotFound = true;
+        }
+      );
+    }
   }
 
   addNote(): void {

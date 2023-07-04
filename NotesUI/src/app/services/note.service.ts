@@ -17,7 +17,7 @@ export class NoteService {
     return this.http.get<ServiceResponse<Note[]>>(`${this.apiUrl}/GetAllNotes`);
   }
 
-  getNoteByTitle(words: string): Observable<ServiceResponse<Note[]>> {
+  getNoteByWords(words: string): Observable<ServiceResponse<Note[]>> {
     return this.http.get<ServiceResponse<Note[]>>(`${this.apiUrl}/GetNoteByWords/${words}`);
   }
 

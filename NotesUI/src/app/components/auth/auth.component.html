@@ -1,25 +1,33 @@
 <div *ngIf="!loggedIn">
-  <div>
-    <label for="username">Name:</label>
-    <input id="username" [(ngModel)]="user.username" placeholder="Username" class="form-control">
-  </div>
-  <div>
-    <label for="password">Password:</label>
-    <input id="password" [(ngModel)]="user.password" placeholder="Password" type="password" class="form-control">
-  </div>
-  <button class="btn btn-secondary mt-3" (click)="registerUser(user)">User Register</button>
-  <button class="btn btn-secondary mt-3 ms-2" (click)="loginUser(user)">User Login</button>
+  <button class="btn btn-secondary mt-3" (click)="enterAsUser()">Enter as User</button>
+  <button class="btn btn-secondary mt-3 ms-2" (click)="enterAsAdmin()">Enter as Admin</button>
 
-  <div>
-    <label for="adminUsername">Name:</label>
-    <input id="adminUsername" [(ngModel)]="admin.username" placeholder="AdminName" class="form-control">
+  <div *ngIf="isUserMode">
+    <div>
+      <label for="username">Name:</label>
+      <input id="username" [(ngModel)]="user.username" placeholder="Username" class="form-control">
+    </div>
+    <div>
+      <label for="password">Password:</label>
+      <input id="password" [(ngModel)]="user.password" placeholder="Password" type="password" class="form-control">
+    </div>
+    <button class="btn btn-secondary mt-3" (click)="registerUser(user)">User Register</button>
+    <button class="btn btn-secondary mt-3 ms-2" (click)="loginUser(user)">User Login</button>
   </div>
-  <div>
-    <label for="adminPassword">Password:</label>
-    <input id="adminPassword" [(ngModel)]="admin.password" placeholder="Password" type="password" class="form-control">
+
+  <div *ngIf="isAdminMode">
+    <div>
+      <label for="adminUsername">Name:</label>
+      <input id="adminUsername" [(ngModel)]="admin.username" placeholder="AdminName" class="form-control">
+    </div>
+    <div>
+      <label for="adminPassword">Password:</label>
+      <input id="adminPassword" [(ngModel)]="admin.password" placeholder="Password" type="password"
+        class="form-control">
+    </div>
+    <button class="btn btn-secondary mt-3" (click)="registerAdmin(admin)">Admin Register</button>
+    <button class="btn btn-secondary mt-3 ms-2" (click)="loginAdmin(admin)">Admin Login</button>
   </div>
-  <button class="btn btn-secondary mt-3" (click)="registerAdmin(admin)">Admin Register</button>
-  <button class="btn btn-secondary mt-3 ms-2" (click)="loginAdmin(admin)">Admin Login</button>
 </div>
 
 <div *ngIf="loggedIn">
@@ -36,7 +44,6 @@
   {{ errorMessage }}
   <button class="btn btn-sm btn-link" (click)="clearMessages()">Hide</button>
 </div>
-
 
 <div *ngIf="successMessage" class="alert alert-success mt-3">
   {{ successMessage }}

@@ -14,10 +14,24 @@ export class AuthComponent {
   admin = new Admin();
   loggedIn = false;
   isAdmin = false;
+  isUserMode = false;
+  isAdminMode = false;
   errorMessage: string = '';
   successMessage: string = '';
 
   constructor(private authService: AuthService) { }
+
+  enterAsUser() {
+    this.isUserMode = true;
+    this.isAdminMode = false;
+    this.clearMessages();
+  }
+
+  enterAsAdmin() {
+    this.isUserMode = false;
+    this.isAdminMode = true;
+    this.clearMessages();
+  }
 
   registerUser(user: User) {
     this.authService.registerUser(user).subscribe(
@@ -56,6 +70,8 @@ export class AuthComponent {
           localStorage.setItem('authToken', response.data);
           this.loggedIn = true;
           this.isAdmin = false;
+          this.isUserMode = false;
+          this.isAdminMode = false;
           this.clearMessages();
         } else {
           this.errorMessage = response.message;
@@ -74,6 +90,8 @@ export class AuthComponent {
           localStorage.setItem('authToken', response.data);
           this.loggedIn = true;
           this.isAdmin = true;
+          this.isUserMode = false;
+          this.isAdminMode = true;
           this.clearMessages();
         } else {
           this.errorMessage = response.message;
@@ -89,6 +107,8 @@ export class AuthComponent {
     localStorage.removeItem('authToken');
     this.loggedIn = false;
     this.isAdmin = false;
+    this.isUserMode = false;
+    this.isAdminMode = false;
     this.clearMessages();
   }
 

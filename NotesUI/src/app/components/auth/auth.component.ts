@@ -42,8 +42,8 @@ export class AuthComponent {
           this.errorMessage = response.message;
         }
       },
-      (error) => {
-        this.errorMessage = 'An error occurred during user registration.';
+      (errorResponse) => {
+        this.errorMessage = errorResponse.error.message;
       }
     );
   }
@@ -57,8 +57,8 @@ export class AuthComponent {
           this.errorMessage = response.message;
         }
       },
-      (error) => {
-        this.errorMessage = 'An error occurred during admin registration.';
+      (errorResponse) => {
+        this.errorMessage = errorResponse.error.message;
       }
     );
   }
@@ -77,8 +77,8 @@ export class AuthComponent {
           this.errorMessage = response.message;
         }
       },
-      (error) => {
-        this.errorMessage = 'An error occurred during user login.';
+      (errorResponse) => {
+        this.errorMessage = errorResponse.error.message;
       }
     );
   }
@@ -97,8 +97,8 @@ export class AuthComponent {
           this.errorMessage = response.message;
         }
       },
-      (error) => {
-        this.errorMessage = 'An error occurred during admin login.';
+      (errorResponse) => {
+        this.errorMessage = errorResponse.error.message;
       }
     );
   }

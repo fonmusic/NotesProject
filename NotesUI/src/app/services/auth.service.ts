@@ -14,17 +14,11 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   public registerUser(user: User): Observable<ServiceResponse<number>> {
-    return this.http.post<ServiceResponse<number>>(
-      `${environment.apiUrl}/Auth/User/Register`,
-      user
-    );
+    return this.http.post<ServiceResponse<number>>(`${environment.apiUrl}/Auth/User/Register`, user);
   }
 
   public registerAdmin(user: Admin): Observable<ServiceResponse<number>> {
-    return this.http.post<ServiceResponse<number>>(
-      `${environment.apiUrl}/Auth/Admin/Register`,
-      user
-    );
+    return this.http.post<ServiceResponse<number>>(`${environment.apiUrl}/Auth/Admin/Register`, user);
   }
 
   public loginUser(user: User): Observable<ServiceResponse<string>> {

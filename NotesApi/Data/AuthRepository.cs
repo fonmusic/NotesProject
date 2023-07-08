@@ -76,7 +76,7 @@ public class AuthRepository : IAuthRepository
         if (user is null)
         {
             response.Success = false;
-            response.Message = "User not found.";
+            response.Message = "Admin not found.";
         }
         else if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
         {
@@ -103,7 +103,7 @@ public class AuthRepository : IAuthRepository
         if (await UserExists(user.Username))
         {
             response.Success = false;
-            response.Message = "User already exists.";
+            response.Message = "Admin already exists.";
             return response;
         }
 

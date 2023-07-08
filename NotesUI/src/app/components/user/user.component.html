@@ -80,7 +80,7 @@
               <th>Title</th>
               <!-- <th>Created Date</th> -->
               <th>Updated Date</th>
-              <th>Actions</th>
+              <th class="text-end">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -89,7 +89,7 @@
               <td>{{ note.title }}</td>
               <!-- <td>{{ note.createdDate | date :'yyyy-MM-dd HH:mm z' }}</td> -->
               <td>{{ note.updatedDate | date :'yyyy-MM-dd HH:mm' }}</td>
-              <td>
+              <td class="text-end">
                 <!-- Отображение кнопок Open и Edit -->
                 <button class="btn btn-secondary me-2" (click)="toggleNoteText(i)">Open</button>
                 <!-- <button class="btn btn-secondary" (click)="toggleEditNoteForm(i)">Edit</button> -->

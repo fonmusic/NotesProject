@@ -11,17 +11,16 @@
       <tr>
         <th>ID</th>
         <th>Username</th>
-        <th>Actions</th>
+        <th class="text-end">Actions</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let user of users">
         <td>{{ user.id }}</td>
         <td>{{ user.username }}</td>
-        <td>
+        <td class="text-end">
           <button class="btn btn-danger" (click)="user.id && deleteUserById(user.id)">Delete</button>
         </td>
       </tr>
     </tbody>
   </table>
-</div>

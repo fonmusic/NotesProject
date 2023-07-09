@@ -1,11 +1,13 @@
 <div class="admin-component">
   <h2>Users</h2>
 
+  <!-- Delete message -->
   <div *ngIf="deleteMessage" class="alert alert-success">
     {{ deleteMessage }}
     <button class="btn btn-sm btn-link" (click)="hideDeleteMessage()">Hide</button>
   </div>
 
+  <!-- Users table -->
   <table class="table table-striped">
     <thead>
       <tr>

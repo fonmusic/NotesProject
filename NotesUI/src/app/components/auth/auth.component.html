@@ -1,7 +1,9 @@
 <div *ngIf="!loggedIn">
+  <!-- Enter as User and Enter as Admin buttons -->
   <button class="btn btn-secondary mt-3" (click)="enterAsUser()">Enter as User</button>
   <button class="btn btn-secondary mt-3 ms-2" (click)="enterAsAdmin()">Enter as Admin</button>
 
+  <!-- User mode form -->
   <div *ngIf="isUserMode">
     <div>
       <label for="username">Name:</label>
@@ -15,6 +17,7 @@
     <button class="btn btn-secondary mt-3 ms-2" (click)="loginUser(user)">Sign in</button>
   </div>
 
+  <!-- Admin mode form -->
   <div *ngIf="isAdminMode">
     <div>
       <label for="adminUsername">Name:</label>
@@ -30,6 +33,7 @@
   </div>
 </div>
 
+<!-- Logout button -->
 <div *ngIf="loggedIn">
   <button class="btn btn-secondary mt-3" (click)="logout()">Logout</button>
   <div *ngIf="isAdmin">
@@ -40,11 +44,13 @@
   </div>
 </div>
 
+<!-- Error message -->
 <div *ngIf="errorMessage" class="alert alert-danger mt-3">
   {{ errorMessage }}
   <button class="btn btn-sm btn-link" (click)="clearMessages()">Hide</button>
 </div>
 
+<!-- Success message -->
 <div *ngIf="successMessage" class="alert alert-success mt-3">
   {{ successMessage }}
   <button class="btn btn-sm btn-link" (click)="clearMessages()">Hide</button>

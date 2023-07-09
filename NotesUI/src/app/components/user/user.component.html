@@ -2,10 +2,10 @@
   <div>
     <h2>My Notes</h2>
 
-    <!-- Отображение кнопки Create Note -->
+    <!-- Display Create Note button -->
     <button class="btn btn-secondary mt-3" (click)="toggleCreateNoteForm()">{{ buttonNoteEditorLabel }}</button>
 
-    <!-- Форма создания заметки -->
+    <!-- Note creation form -->
     <div *ngIf="showCreateNoteForm" class="mt-3">
       <div>
         <label for="newNoteTitle">Title:</label>
@@ -18,7 +18,7 @@
       <button class="btn btn-secondary mt-3" (click)="addNote(); toggleCreateNoteForm()">Add Note</button>
     </div>
 
-    <!-- Отображение текста заметки и формы редактирования -->
+    <!-- Display note text and edit form -->
     <div *ngFor="let note of notes; let i = index">
       <div *ngIf="showNoteText[i]" class="note-text-container mt-3">
         <h3 class="note-title">{{ note.title }}</h3>
@@ -43,22 +43,22 @@
       </div>
     </div>
 
-    <!-- Сообщение об отсутствии заметок -->
+    <!-- Message for no notes found -->
     <p *ngIf="notesNotFound" class="mt-3">Notes not found.</p>
 
-    <!-- Сообщение об успехе -->
+    <!-- Success message -->
     <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
       {{ successMessage }}
       <button type="button" class="btn-close" (click)="successMessage = ''" aria-label="Close"></button>
     </div>
 
-    <!-- Сообщение об ошибке -->
+    <!-- Error message -->
     <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
       {{ errorMessage }}
       <button type="button" class="btn-close" (click)="errorMessage = ''" aria-label="Close"></button>
     </div>
 
-    <!-- Поиск заметок по словам -->
+    <!-- Search notes by words -->
     <div class="mt-3 smaller">
       <div class="mt-3">
         <div class="position-relative">
@@ -70,7 +70,7 @@
     </div>
 
 
-    <!-- Таблица с заметками пользователя -->
+    <!-- User's notes table -->
     <div class="mt-3">
       <div class="mh-500px w-100 overflow-auto d-inline-block shadow">
         <table class="table table-striped" *ngIf="!notesNotFound">
@@ -90,7 +90,7 @@
               <!-- <td>{{ note.createdDate | date :'yyyy-MM-dd HH:mm z' }}</td> -->
               <td>{{ note.updatedDate | date :'yyyy-MM-dd HH:mm' }}</td>
               <td class="text-end">
-                <!-- Отображение кнопок Open и Edit -->
+                <!-- Display Open and Edit buttons -->
                 <button class="btn btn-secondary me-2" (click)="toggleNoteText(i)">Open</button>
                 <!-- <button class="btn btn-secondary" (click)="toggleEditNoteForm(i)">Edit</button> -->
               </td>

@@ -1,0 +1,15 @@
+version: '3'
+services:
+  api:
+    build:
+      context: NotesApi
+      dockerfile: Dockerfile
+    ports:
+      - 5158:80
+
+  angular:
+    build:
+      context: NotesUI
+      dockerfile: Dockerfile
+    ports:
+      - 4200:80

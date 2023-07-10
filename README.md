@@ -23,6 +23,10 @@ The Notes project frontend is developed using the following technologies:
 - Angular: a platform for building web applications using TypeScript.
 - HTML and CSS: used for markup and styling the user interface.
 
+### Docker
+
+The project includes a Dockerfile for creating container images for the backend and frontend. Docker facilitates the deployment and management process by packaging all the necessary dependencies and configurations into containers.
+
 ## Functionality
 
 The application provides the following functionality:
@@ -55,9 +59,7 @@ The frontend of the application is a web interface for interacting with the back
 - `AdminComponent`: A component for managing users by administrators. It displays a list of users and allows administrators to delete selected users.
 - `UserComponent`: A component for managing user notes. It displays a list of user notes, allows adding new notes, editing, and deleting existing notes.
 
-## Docker
 
-The project includes a Dockerfile for creating container images for the backend and frontend. Docker facilitates the deployment and management process by packaging all the necessary dependencies and configurations into containers.
 
 ## Installation and Running
 

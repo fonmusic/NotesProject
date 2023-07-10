@@ -2,6 +2,9 @@
 
 The Notes project is a web application for managing user notes. It consists of two parts: the backend developed using .NET and SQLite database, and the frontend built with Angular.
 
+### Demo video
+https://youtu.be/Fkxt-ohpSYc
+
 ## Technologies
 
 ### Backend
